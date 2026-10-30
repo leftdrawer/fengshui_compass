@@ -13,7 +13,7 @@
 python -m http.server 8080
 ```
 
-브라우저에서 `http://localhost:8080/compass.html` 을 열고 입장 비밀번호를 입력하면 시작됩니다.
+브라우저에서 `http://localhost:8080/` 을 열면 기기를 자동 감지해 데스크톱은 `compass.html`, 모바일은 `compass-mobile.html` 로 이동합니다. 비밀번호 없이 바로 로드됩니다. 원하는 화면을 직접 열고 싶다면 `compass.html`(데스크톱) 또는 `compass-mobile.html`(모바일 전용) 을 열면 됩니다.
 
 > 파일을 직접 더블클릭(`file://`)으로 열면 모듈 동적 로딩이 막힐 수 있으니, 위처럼 정적 서버로 여는 것을 권장합니다.
 
@@ -31,7 +31,9 @@ python -m http.server 8080
 
 | 경로 | 설명 |
 | --- | --- |
-| `compass.html` | 메인 페이지 (CSS 인라인, 입장 게이트 + JS 모듈 로더) |
+| `index.html` | 기기 감지 리디렉션 진입점 (데스크톱→`compass.html`, 모바일→`compass-mobile.html`) |
+| `compass.html` | 데스크톱 메인 페이지 (CSS 인라인, JS 모듈 로더) |
+| `compass-mobile.html` | 모바일 전용 컴팩트 페이지 (세로형 레이아웃, 동일 7단계 기능) |
 | `src/` | 바닐라 JavaScript 모듈 (계산 엔진 + 데이터 + UI) |
 | `assets/` | 앱 아이콘 |
 | `manifest.webmanifest` | PWA 매니페스트 (모바일 홈 화면 추가 지원) |
@@ -39,7 +41,7 @@ python -m http.server 8080
 ## 기술
 
 - 프레임워크/빌드 도구 없는 정적 HTML + 바닐라 JS
-- Pretendard 폰트, 따뜻한 뉴트럴 브라운 팔레트, 다크/라이트 테마
+- Pretendard 폰트, 뉴트럴 그레이 + 오렌지 액센트 팔레트, 다크 기본 + 라이트 테마
 - 본문·버튼·상태 표시 모두 WCAG AA(대비 ≥ 4.5:1) 충족
 - 반응형 (모바일/데스크톱), `prefers-reduced-motion` 대응
 
