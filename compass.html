@@ -19,6 +19,27 @@
   <meta name="twitter:card" content="summary_large_image">
   <title>은호당 현공비성 풍수 나침반</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <script>
+    // 뷰 선택 공용 로직(데스크톱/모바일 자동 감지 + 수동 전환 유지). 무한 리디렉션 방지를 위해 각 페이지는 "반대 기기"일 때만 상대 페이지로 보낸다.
+    (()=>{
+      const PREF_KEY='xuankong-view-preference';
+      const store={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
+      const qs=new URLSearchParams(location.search);
+      const forced=qs.get('force'); // 'desktop' | 'mobile'
+      if(forced==='desktop'||forced==='mobile')store.set(PREF_KEY,forced);
+      const pref=forced||store.get(PREF_KEY);
+      const isMobile=()=>{
+        try{
+          if(matchMedia('(max-width:768px)').matches)return true;
+          if(matchMedia('(pointer:coarse)').matches&&matchMedia('(max-width:900px)').matches)return true;
+        }catch{}
+        return /Android|iPhone|iPod|Windows Phone|BlackBerry|Mobile/i.test(navigator.userAgent||'');
+      };
+      window.__xuankongView={PREF_KEY,pref,isMobile,store};
+      // 이 페이지는 데스크톱 버전. 사용자가 데스크톱을 강제하지 않았고 모바일 기기로 보이면 모바일 버전으로 보낸다.
+      if(pref!=='desktop'&&isMobile())location.replace('./compass-mobile.html'+(forced?'?force=mobile':''));
+    })();
+  </script>
   <script>window.safeStore={get(k,f=null){try{return localStorage.getItem(k)??f}catch{return f}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};document.documentElement.dataset.theme=safeStore.get('xuankong-theme')||'dark';document.documentElement.dataset.reportView=safeStore.get('xuankong-compass-report-view')||'client'</script>
   <style>
     :root{--bg:#F5F5F7;--card:#FFFFFF;--ink:#1A1A1D;--muted:#6A6A72;--line:#E0E0E4;--jade:#B4530E;--jade2:#C9641A;--gold:#B4530E;--accent:#B4530E;--accent-ink:#FFFFFF;--st-green:#0b6845;--st-blue:#1d5fa8;--st-red:#b02f22;--st-amber:#8a5a16;--shadow:0 24px 70px rgba(20,20,24,.10);font-family:"Pretendard Variable","Pretendard",system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg)}
@@ -391,7 +412,7 @@
     })();
   </script>
   <main class="shell">
-    <header class="top"><a class="brand" href="https://beacons.ai/left_drawer" target="_blank" rel="noopener noreferrer" aria-label="은호당 현공비성 풍수 나침반 홈"><span class="brand-logo" aria-hidden="true">은</span><span>은호당 현공비성 풍수<small>은호당 제작</small></span></a><div class="top-actions"><button class="ghost top-guide" id="openGuide" type="button">사용 안내</button><a class="ig-cta" href="https://beacons.ai/left_drawer" target="_blank" rel="noopener noreferrer" aria-label="은호당 링크 열기"><span><strong>은호당 링크</strong><small>beacons.ai/left_drawer</small></span><i>↗</i></a><button class="ghost" id="theme" aria-label="밝게/어둡게 전환">◐</button></div></header>
+    <header class="top"><a class="brand" href="https://beacons.ai/left_drawer" target="_blank" rel="noopener noreferrer" aria-label="은호당 현공비성 풍수 나침반 홈"><span class="brand-logo" aria-hidden="true">은</span><span>은호당 현공비성 풍수<small>은호당 제작</small></span></a><div class="top-actions"><button class="ghost top-guide" id="openGuide" type="button">사용 안내</button><a class="ig-cta" href="https://beacons.ai/left_drawer" target="_blank" rel="noopener noreferrer" aria-label="은호당 링크 열기"><span><strong>은호당 링크</strong><small>beacons.ai/left_drawer</small></span><i>↗</i></a><button class="ghost" id="theme" aria-label="밝게/어둡게 전환">◐</button><a class="ghost view-switch-link" href="./compass-mobile.html?force=mobile" aria-label="모바일 버전으로 보기">📱 모바일</a></div></header>
     <nav class="experience-nav" aria-label="궁반 분석 7단계">
       <button type="button" class="active" data-scroll-target="instrument" data-step="1" aria-current="step"><b>1</b><span>방향 재기</span></button>
       <button type="button" data-scroll-target="chartStep" data-step="2"><b>2</b><span>궁반 보기</span></button>

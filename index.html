@@ -5,10 +5,32 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>은호당 현공비성 풍수 나침반</title>
   <link rel="canonical" href="./compass.html">
-  <meta http-equiv="refresh" content="0;url=./compass.html">
-  <script>location.replace('./compass.html')</script>
+  <script>
+    // 기기 감지로 데스크톱/모바일 버전을 고른다. 수동 선택(?force= 또는 localStorage)은 그대로 존중한다.
+    (()=>{
+      const PREF_KEY='xuankong-view-preference';
+      const store={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
+      const qs=new URLSearchParams(location.search);
+      const forced=qs.get('force');
+      if(forced==='desktop'||forced==='mobile')store.set(PREF_KEY,forced);
+      const pref=forced||store.get(PREF_KEY);
+      const isMobile=()=>{
+        try{
+          if(matchMedia('(max-width:768px)').matches)return true;
+          if(matchMedia('(pointer:coarse)').matches&&matchMedia('(max-width:900px)').matches)return true;
+        }catch{}
+        return /Android|iPhone|iPod|Windows Phone|BlackBerry|Mobile/i.test(navigator.userAgent||'');
+      };
+      let target='./compass.html';
+      if(pref==='mobile')target='./compass-mobile.html';
+      else if(pref==='desktop')target='./compass.html';
+      else if(isMobile())target='./compass-mobile.html';
+      location.replace(target);
+    })();
+  </script>
+  <noscript><meta http-equiv="refresh" content="0;url=./compass.html"></noscript>
 </head>
 <body>
-  <p><a href="./compass.html">은호당 현공비성 풍수 나침반 열기</a></p>
+  <p><a href="./compass.html">은호당 현공비성 풍수 나침반 열기</a> · <a href="./compass-mobile.html">모바일 버전</a></p>
 </body>
 </html>
