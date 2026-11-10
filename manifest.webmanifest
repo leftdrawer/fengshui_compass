@@ -1,6 +1,6 @@
 {
-  "name": "은호당 현공비성 풍수 나침반",
-  "short_name": "은호당 나침반",
+  "name": "풍수 나침반",
+  "short_name": "풍수 나침반",
   "description": "쉬운 풀이로 현공 비성 궁반, 방 배치, 주택 순위를 이해하는 풍수 나침반 도구.",
   "lang": "ko",
   "start_url": "./compass.html",
