@@ -17,6 +17,7 @@
 
   const ELEMENT_KO = { '水': '수', '木': '목', '火': '화', '土': '토', '金': '금' };
   const RING_KEY = 'iching-circle-ring';
+  const RING_LAYOUT_KEY = 'iching-circle-ring-layout';
 
   let api = null;
   let corpus = null;
@@ -27,7 +28,8 @@
   let pendingPalace = null;
   let ringOn = false;
   let ringBuilt = false;
-  let lastRingIndex = -1;
+  let ringLayout = 'kingwen';
+  let lastRingKey = '';
   let nodes = {};
 
   function esc(value) {
@@ -129,8 +131,16 @@
       readout.className = 'iching-ring-readout';
       readout.id = 'ichingRingReadout';
       readout.hidden = true;
+      const layouts = document.createElement('div');
+      layouts.className = 'iching-ring-layouts';
+      layouts.id = 'ichingRingLayouts';
+      layouts.hidden = true;
+      layouts.setAttribute('role', 'group');
+      layouts.setAttribute('aria-label', '64괘 고리 배열');
+      layouts.innerHTML = '<button type="button" data-ring-layout="kingwen">문왕괘서</button><button type="button" data-ring-layout="xiantian">선천원도</button>';
       wrap.insertAdjacentElement('afterend', readout);
       wrap.insertAdjacentElement('afterend', caption);
+      wrap.insertAdjacentElement('afterend', layouts);
       wrap.insertAdjacentElement('afterend', toggle);
     }
     const chart = document.getElementById('chartStep');
@@ -157,6 +167,7 @@
       toggle: document.getElementById('ichingRingToggle'),
       caption: document.getElementById('ichingRingCaption'),
       readout: document.getElementById('ichingRingReadout'),
+      layouts: document.getElementById('ichingRingLayouts'),
       dialog: document.getElementById('ichingDetail'),
       detailBody: document.getElementById('ichingDetailBody'),
       dial: document.getElementById('dial'),
@@ -184,12 +195,38 @@
     return `${circle(outer)} ${circle(inner)}`;
   }
 
+  function ringSlots() {
+    if (!corpus) return [];
+    if (ringLayout === 'xiantian') return core.xiantianSlots(corpus.hexagrams);
+    return corpus.kingWen.map((hexagram, index) => ({ hexagram, rank: index, angle: index * 5.625 }));
+  }
+
+  function ringCaption() {
+    if (ringLayout === 'xiantian') {
+      return '선천원도. 주희 《주역본의》 복희육십사괘방위. 건과 구가 만나는 선이 남(오, 180°), 곤과 복이 만나는 선이 북(자, 0°). 동쪽은 건에서 복, 서쪽은 구에서 곤. 안쪽 획이 초효입니다. 고리는 24산 안쪽에서 판과 함께 돕니다.';
+    }
+    return '문왕괘서 1–64. 1번 건을 나침반 0°(자)에 두고 시계 방향으로 한 칸 5.625°. 주역의 원의 탐색 배열이며 복희·소옹 원도가 아닙니다. 안쪽 획이 초효, 바깥 획이 상효입니다. 고리는 24산 안쪽에서 판과 함께 돕니다.';
+  }
+
+  function paintLayoutButtons() {
+    if (!nodes.layouts) return;
+    nodes.layouts.hidden = !ringOn;
+    nodes.layouts.querySelectorAll('[data-ring-layout]').forEach(button => {
+      const active = button.getAttribute('data-ring-layout') === ringLayout;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+  }
+
   // 고리는 #dial 안에 둔다. 나침반 회전 transform 하나만 타고, 칸마다 JS로 다시 그리지 않는다.
   function buildRing() {
-    if (ringBuilt || !nodes.dial || !corpus) return;
+    if (!nodes.dial || !corpus) return;
+    if (ringBuilt && nodes.ring && nodes.ring.dataset.layout === ringLayout) return;
+    if (nodes.ring) nodes.ring.remove();
     const svgNs = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(svgNs, 'svg');
     svg.setAttribute('class', 'iching-ring');
+    svg.dataset.layout = ringLayout;
     svg.setAttribute('viewBox', '0 0 100 100');
     svg.setAttribute('aria-hidden', 'true');
     const band = document.createElementNS(svgNs, 'path');
@@ -197,9 +234,9 @@
     band.setAttribute('fill-rule', 'evenodd');
     band.setAttribute('d', annulusPath(50, 50, 25.6, 33.2));
     svg.append(band);
-    corpus.kingWen.forEach((hexagram, index) => {
-      const degrees = index * 5.625;
-      const bits = String(hexagram.binary_bottomToTop || '');
+    ringSlots().forEach(slot => {
+      const degrees = slot.angle;
+      const bits = String(slot.hexagram.binary_bottomToTop || '');
       const group = document.createElementNS(svgNs, 'g');
       for (let lineIndex = 0; lineIndex < 6; lineIndex += 1) {
         const radius = 26.2 + lineIndex * (29.4 - 26.2) / 5;
@@ -220,13 +257,25 @@
       text.setAttribute('dominant-baseline', 'central');
       text.setAttribute('font-size', '2.45');
       text.setAttribute('transform', `rotate(${degrees.toFixed(2)} ${point[0].toFixed(2)} ${point[1].toFixed(2)})`);
-      text.textContent = hexagram.nameHanja || '';
+      text.textContent = slot.hexagram.nameHanja || '';
       group.append(text);
       svg.append(group);
     });
     nodes.dial.append(svg);
     ringBuilt = true;
     nodes.ring = svg;
+    lastRingKey = '';
+  }
+
+  function setRingLayout(layout) {
+    ringLayout = layout === 'xiantian' ? 'xiantian' : 'kingwen';
+    storeSet(RING_LAYOUT_KEY, ringLayout);
+    paintLayoutButtons();
+    if (nodes.caption) nodes.caption.textContent = ringCaption();
+    if (ringOn) {
+      buildRing();
+      if (api && typeof api.getHeading === 'function') syncHeading(api.getHeading());
+    }
   }
 
   function setRing(on) {
@@ -239,12 +288,12 @@
     }
     if (nodes.caption) {
       nodes.caption.hidden = !ringOn;
-      nodes.caption.textContent = '문왕괘서 1–64. 1번 건을 나침반 0°(자)에 두고 시계 방향으로 한 칸 5.625°. 주역의 원의 탐색 배열이며 복희·소옹 원도가 아닙니다. 안쪽 획이 초효, 바깥 획이 상효입니다. 고리는 나침반 판과 함께 돕니다.';
+      nodes.caption.textContent = ringCaption();
     }
     if (nodes.readout) nodes.readout.hidden = !ringOn;
+    paintLayoutButtons();
     if (ringOn) {
       buildRing();
-      lastRingIndex = -1;
       if (api && typeof api.getHeading === 'function') syncHeading(api.getHeading());
     }
   }
@@ -305,7 +354,7 @@
     houseKey = nextKey;
     const spec = core.stackSpec(core.HOUSE_HEXAGRAM_STACK);
     const intro = `<div class="iching-house-head"><div><p class="eyebrow">보조 해석</p><h3>좌향으로 본 집의 괘</h3></div><span class="iching-supplement">현공비성 아님</span></div>
-      <p class="iching-note">이 괘는 현공 비성 배반이 아닙니다. 좌궁과 향궁의 후천팔괘를 겹친 주역 괘입니다. ${esc(spec.label)}. 좌와 향은 서로 반대 궁이라 맞짝 8괘 가운데 하나이고, 같은 궁의 세 산은 같은 괘입니다.</p>`;
+      <p class="iching-note">쌓기: ${esc(spec.label)}. 현공 비성 배반이 아닙니다. 좌와 향은 반대 궁이라 맞짝 8괘 중 하나이고, 같은 궁의 세 산은 같은 괘입니다.</p>`;
     if (!corpus) {
       nodes.house.innerHTML = `${intro}<p class="iching-status">${esc(loadError || '주역 자료를 불러오는 중입니다.')}</p>`;
       return;
@@ -464,12 +513,17 @@
 
   function syncHeading(heading) {
     if (!ringOn || !corpus || !nodes.readout) return;
-    const index = core.ringIndexAt(heading);
-    if (index === lastRingIndex) return;
-    lastRingIndex = index;
-    const hexagram = corpus.kingWen[index];
+    const slots = ringSlots();
+    const slot = ringLayout === 'xiantian'
+      ? core.slotAtAngle(heading, slots)
+      : slots[core.ringIndexAt(heading)];
+    const hexagram = slot && slot.hexagram;
     if (!hexagram) return;
-    nodes.readout.textContent = `고리 12시 · ${hexagram.number} ${hexagram.fullNameKo || hexagram.nameKo} (${hexagram.nameHanja})`;
+    const key = `${ringLayout}:${hexagram.number}`;
+    if (key === lastRingKey) return;
+    lastRingKey = key;
+    const layoutName = ringLayout === 'xiantian' ? '선천' : '문왕';
+    nodes.readout.textContent = `고리 12시 · ${layoutName} · ${hexagram.number} ${hexagram.fullNameKo || hexagram.nameKo} (${hexagram.nameHanja})`;
   }
 
   function onClick(event) {
@@ -492,6 +546,11 @@
       document.getElementById(`ichingPalace-${scroll.getAttribute('data-iching-scroll')}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
+    const layoutButton = event.target.closest('[data-ring-layout]');
+    if (layoutButton) {
+      setRingLayout(layoutButton.getAttribute('data-ring-layout'));
+      return;
+    }
     if (event.target.closest('#ichingRingToggle')) setRing(!ringOn);
   }
 
@@ -507,6 +566,7 @@
       });
     }
     ringOn = storeGet(RING_KEY) === 'on';
+    ringLayout = storeGet(RING_LAYOUT_KEY) === 'xiantian' ? 'xiantian' : 'kingwen';
     if (api.getChart) latestChart = api.getChart();
     if (api.getSelected) latestSelected = api.getSelected();
     renderDaily();

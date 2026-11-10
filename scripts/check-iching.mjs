@@ -87,6 +87,31 @@ assert.equal(iching.ringIndexAt(2.8125), 1);
 assert.equal(iching.ringIndexAt(5.625), 1);
 assert.equal(iching.ringIndexAt(359), 0);
 assert.equal(iching.ringIndexAt(357.1), 63);
+
+const xiantian = iching.xiantianSlots(hexagrams);
+assert.equal(xiantian[0].hexagram.nameHanja, '乾');
+assert.equal(xiantian[31].hexagram.nameHanja, '復');
+assert.equal(xiantian[32].hexagram.nameHanja, '姤');
+assert.equal(xiantian[63].hexagram.nameHanja, '坤');
+assert.equal(xiantian[0].hexagram.number, 1);
+assert.equal(xiantian[63].hexagram.number, 2);
+const at = heading => iching.slotAtAngle(heading, xiantian).hexagram.nameHanja;
+assert.equal(at(180), '乾');
+assert.equal(at(0), '坤');
+assert.equal(at(90), '同人');
+assert.equal(at(270), '師');
+assert.equal(at(177.1875), '乾');
+assert.equal(at(182.8125), '姤');
+assert.equal(at(2.8125), '復');
+function circDist(a, b) {
+  const d = Math.abs(a - b) % 360;
+  return d > 180 ? 360 - d : d;
+}
+xiantian.forEach(slot => {
+  const opposite = xiantian[63 - slot.rank];
+  const distance = circDist(slot.angle, opposite.angle);
+  assert.ok(Math.abs(distance - 180) < 1e-6, `${slot.hexagram.nameHanja} opposite ${distance}`);
+});
 assert.equal(corpus.kingWen[0].number, 1);
 assert.equal(corpus.kingWen[63].number, 64);
 

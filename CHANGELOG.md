@@ -9,6 +9,8 @@
 - 고리: 복희·소옹 원도 순서는 출처가 없어 넣지 않음.
 - 빈 파일: `dual-star-corpus.json`은 코드가 요청하지만 저장소에 없음.
 - 같이 고침: `#houseAxisLine` 앞에 빈 텍스트 칸이 없어 궁반을 그릴 때 스크립트가 멈추던 것을 고침.
+- 이어서: 64괘 고리에 선천원도 선택을 더함. 기본은 문왕괘서. 차례는 효의 이진수이고, 자리는 주희 《주역본의》 복희육십사괘방위와 호일계 주석을 열어서 맞췄다. 건·구의 경계가 오(180°), 곤·복의 경계가 자(0°).
+- `dual-star-corpus.json` 은 저장소에 없으므로 요청하지 않는다. 브라우저 404가 남지 않고, 성결 칸에는 파일이 없다는 짧은 안내만 둔다.
 - 관련 파일: `src/iching-circle.js`, `src/iching-circle-ui.js`, `src/iching-circle.css`, `src/compass-app.js`, `compass.html`, `compass-mobile.html`, `data/`
 
 ## 2026-10-31 — CHANGELOG 신설

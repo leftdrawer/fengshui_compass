@@ -29,7 +29,8 @@
   const SOURCE_NAME = '주역의 원';
   const SOURCE_URL = 'https://iching-circle.pages.dev/';
   const DAILY_METHOD = 'uniform-crypto-v1';
-  const DATA_VERSION = '130';
+  const DATA_VERSION = '131';
+  const RING_STEP = 360 / 64;
 
   // 나침반 궁 키 → 후천 괘 한자. xuankong-engine PALACE_DEFINITIONS.name 과 같아야 한다.
   const PALACE_TRIGRAM_HANJA = Object.freeze({
@@ -146,16 +147,80 @@
     });
   }
 
-  // 64괘 고리에서 나침반 각도가 가리키는 칸.
-  // 1번 괘는 판의 0°(자, 북)에 있고 시계 방향으로 5.625°씩. 전통 복희 원도가 아니다.
-  // 선천(복희·소옹) 64괘 원도 순서는 넣지 않았다.
-  // 주역의 원 추출 README(2026-11-10)는 사이트에 그 순서가 없고
-  // "복희·소옹 원도와 다른 배열"이라는 안내만 있다고 적는다.
-  // data/wheel.json 의 outerRing 도 문왕괘서 1–64 를 12시부터 시계 방향으로 둔다.
+  // 문왕괘서 고리. 1번 괘는 나침반 0°(자, 북)에 있고 시계 방향으로 5.625°씩.
+  // 주역의 원이 스스로 밝힌 탐색 배열이며 전통 원도가 아니다.
+  // data/wheel.json outerRing 도 같은 순서다.
   function ringIndexAt(degrees) {
-    const step = 360 / 64;
-    const turn = ((Number(degrees) % 360) + 360) % 360;
-    return Math.floor((turn + step / 2) / step) % 64;
+    const turn = normDegrees(degrees);
+    return Math.floor((turn + RING_STEP / 2) / RING_STEP) % 64;
+  }
+
+  function normDegrees(degrees) {
+    return ((Number(degrees) % 360) + 360) % 360;
+  }
+
+  /*
+   * 선천(복희·소옹) 64괘 차례와 원도.
+   *
+   * 차례는 괘의 binary_bottomToTop(아래 초효 → 위 상효, 양=1·음=0)에서 계산한다.
+   * 초효를 최상위 비트, 상효를 최하위 비트로 두면 건=63 … 곤=0 이다.
+   * 선천차례 1…64 는 그 값을 큰 것부터 센 순서라 건 1, 쾌 2, … 복 32, 구 33, … 곤 64 다.
+   * 위키백과 「六十四卦」의 복희차서(곤→건)를 뒤집으면 같은 64괘가 된다.
+   * https://zh.wikipedia.org/zh-hant/六十四卦
+   *
+   * 원도 자리는 주희 《주역본의》 복희육십사괘방위도와 그 주석을 따랐다.
+   * 본의 그림 설명: 「此圖圓布者，乾盡午中，坤盡子中，離盡卯中，坎盡酉中。」
+   * https://www.eee-learning.com/book/juicy-ch05
+   * 호일계(雙湖胡氏), 《역학사동별록》이 인용한 원도:
+   * 양의 32괘는 건에서 복까지 왼쪽, 건은 남의 절반, 복은 북의 절반.
+   * 음의 32괘는 구에서 곤까지 오른쪽, 구는 남에서 건과 잇고, 곤은 북에서 복과 잇는다.
+   * 건·구 사이가 하지 오중, 곤·복 사이가 동지 자중, 동인·임 사이가 춘분 묘중, 사·둔 사이가 추분 유중.
+   * https://www.shidianguji.com/zh/book/7398438943139561524/chapter/1kbmc0gqwtt0l
+   *
+   * 본의의 그림은 남이 위(오가 12시)다. 이 나침반 판의 0°는 자(북)이고 180°가 오(남)이므로
+   * 그림 각에 180°를 더한다. 그러면 건과 구가 만나는 선이 오(180°), 곤과 복이 만나는 선이 자(0°)다.
+   * 칸의 중심은 그 선에서 반 칸(2.8125°) 비켜 있다.
+   */
+  function xiantianValue(binaryBottomToTop) {
+    const bits = String(binaryBottomToTop || '');
+    if (!/^[01]{6}$/.test(bits)) throw new Error('선천 차례에는 6비트 효가 필요합니다');
+    let value = 0;
+    for (let i = 0; i < 6; i += 1) if (bits[i] === '1') value |= 1 << (5 - i);
+    return value;
+  }
+
+  function xiantianRank(binaryBottomToTop) {
+    return 63 - xiantianValue(binaryBottomToTop);
+  }
+
+  function xiantianDialAngle(rank) {
+    if (!Number.isInteger(rank) || rank < 0 || rank > 63) throw new Error('선천 차례 범위가 아닙니다');
+    const half = RING_STEP / 2;
+    const fromSouth = rank < 32 ? (360 - rank * RING_STEP) % 360 : (rank - 31) * RING_STEP;
+    return (fromSouth + 180 - half + 360) % 360;
+  }
+
+  function xiantianSlots(hexagrams) {
+    const slots = hexagrams.map(hexagram => {
+      const rank = xiantianRank(hexagram.binary_bottomToTop);
+      return { hexagram, rank, angle: xiantianDialAngle(rank) };
+    });
+    slots.sort((a, b) => a.rank - b.rank);
+    if (slots.length !== 64 || slots.some((slot, index) => slot.rank !== index)) {
+      throw new Error('선천 차례가 64괘로 채워지지 않았습니다');
+    }
+    return slots;
+  }
+
+  // (중심 − 반칸, 중심 + 반칸] 에 들어 있는 칸. 정확히 오·자 위에 있으면 건·곤이 걸린다.
+  function slotAtAngle(heading, slots) {
+    const turn = normDegrees(heading);
+    const found = slots.find(slot => {
+      const start = (slot.angle - RING_STEP / 2 + 360) % 360;
+      const delta = (turn - start + 360) % 360;
+      return delta > 0 && delta <= RING_STEP + 1e-9;
+    });
+    return found || slots[0];
   }
 
   function indexCorpus(trigrams, hexagrams) {
@@ -225,7 +290,8 @@
   return Object.freeze({
     HOUSE_HEXAGRAM_STACK, CONTENT_VERSION, SOURCE_NAME, SOURCE_URL, DAILY_METHOD, DATA_VERSION,
     PALACE_TRIGRAM_HANJA, PALACE_RING_ORDER, STACK_MODES,
-    stackSpec, seoulDateKey, uniformIndex, ensureDaily, lineLocation, ringIndexAt,
+    stackSpec, seoulDateKey, uniformIndex, ensureDaily, lineLocation, ringIndexAt, normDegrees,
+    xiantianValue, xiantianRank, xiantianDialAngle, xiantianSlots, slotAtAngle,
     indexCorpus, houseHexagram, loadCorpus
   });
 });
