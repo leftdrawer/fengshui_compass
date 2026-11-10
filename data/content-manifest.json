@@ -1,0 +1,378 @@
+{
+ "contentVersion": "2026.11.07-draft.1",
+ "counts": {
+  "trigrams": 8,
+  "hexagrams": 64,
+  "lines": 384,
+  "extras": 2,
+  "storyThemes": 4
+ },
+ "reviewed": 0,
+ "files": [
+  {
+   "path": "/data/hexagrams/01.json",
+   "bytes": 10804,
+   "sha256": "0cb547eb36fd7bd8c75437fa47b5b8ac190c2299cc07d190c79a15d979af35de"
+  },
+  {
+   "path": "/data/hexagrams/02.json",
+   "bytes": 11009,
+   "sha256": "fce22c2d961af8083811d411d7e8c9540179160389298c6bc14b105657f8d647"
+  },
+  {
+   "path": "/data/hexagrams/03.json",
+   "bytes": 10798,
+   "sha256": "1029d99ae63d948c5e0f0e35515088777b2ad66c8c5ae95722beb97618e34e2d"
+  },
+  {
+   "path": "/data/hexagrams/04.json",
+   "bytes": 10707,
+   "sha256": "6952ff1522f9a44bdfabbec76cd486cd2ad203cf394f891af082048e789b23f4"
+  },
+  {
+   "path": "/data/hexagrams/05.json",
+   "bytes": 10095,
+   "sha256": "8dcceb784c0f285014eed5c21f41449d6bcf986fcbc02566d27b4cc66b31b891"
+  },
+  {
+   "path": "/data/hexagrams/06.json",
+   "bytes": 10646,
+   "sha256": "f0921ddd509353da42650cf12bc0b19bd315139767ebbff55e2fee2b14ad1a03"
+  },
+  {
+   "path": "/data/hexagrams/07.json",
+   "bytes": 10449,
+   "sha256": "170d3328f7ff583b2b1f7b40dedcdd31a5d988eb02dfc6bc75cb902bab9b07cf"
+  },
+  {
+   "path": "/data/hexagrams/08.json",
+   "bytes": 10772,
+   "sha256": "cb1d21d52ba4d23e1d6c3da0915d0a68757846fe33eb63d3c5191fce26e0d992"
+  },
+  {
+   "path": "/data/hexagrams/09.json",
+   "bytes": 10445,
+   "sha256": "cd90ca17f092f16a2e9b054c8fca803190ef7cb8b5de2b7df9c6de3d43141cb5"
+  },
+  {
+   "path": "/data/hexagrams/10.json",
+   "bytes": 10288,
+   "sha256": "9d87ff472505bcf322a36a2aac7b106bd7094e78e41dc2997d7e2d1963f6ea1f"
+  },
+  {
+   "path": "/data/hexagrams/11.json",
+   "bytes": 11280,
+   "sha256": "ecfebae6f7688c402f0fbf50dee891e8989f091fcb1998f4941041e8508cf779"
+  },
+  {
+   "path": "/data/hexagrams/12.json",
+   "bytes": 10517,
+   "sha256": "c59f49f97c33e11ceb4a8ac291d71e2c8ea1f7ab441839e8f9935160da4e2f0a"
+  },
+  {
+   "path": "/data/hexagrams/13.json",
+   "bytes": 10346,
+   "sha256": "4a540465c6b48fea02438a70a583ebe8986e9397b550014f1def495682f53c60"
+  },
+  {
+   "path": "/data/hexagrams/14.json",
+   "bytes": 10077,
+   "sha256": "78c246c64bab785b57e7a2d0e05a42ab2d1b9882e2b57b0a06c3e25a09d245ee"
+  },
+  {
+   "path": "/data/hexagrams/15.json",
+   "bytes": 10239,
+   "sha256": "9e0f7cec0e0a52e838e2c103cceea3722fcb25b2f24db4be19f70c0a5946296f"
+  },
+  {
+   "path": "/data/hexagrams/16.json",
+   "bytes": 10517,
+   "sha256": "3f7a51b7321f973c1e0b4a2af056b75a728afbbfff4c4fe5d140798c2bb408e5"
+  },
+  {
+   "path": "/data/hexagrams/17.json",
+   "bytes": 10830,
+   "sha256": "970843695df92651664cc601ebe1eaa71a8a1f772b5c20945461041365937846"
+  },
+  {
+   "path": "/data/hexagrams/18.json",
+   "bytes": 10864,
+   "sha256": "4e47281cab3fd3a133e78c5931a01ce76c1d0052cf5306f0f6f10fb309a85c0d"
+  },
+  {
+   "path": "/data/hexagrams/19.json",
+   "bytes": 10112,
+   "sha256": "16114d25e111caefc353b743051ef809fa2083a93f56d24c9bbb910feefaaacc"
+  },
+  {
+   "path": "/data/hexagrams/20.json",
+   "bytes": 10140,
+   "sha256": "f3dc48c71a6ffb36948b2b69099f5626adb22abc4b3b5b22c48be4970462fcd1"
+  },
+  {
+   "path": "/data/hexagrams/21.json",
+   "bytes": 10351,
+   "sha256": "33d2ee8c9fd55fd117050b1a53e063c8ef89a18fc69de9ae6a0349e138d80c41"
+  },
+  {
+   "path": "/data/hexagrams/22.json",
+   "bytes": 9927,
+   "sha256": "97b6ea8acf50edd6a57724ae05ef89cbccd405fa1ec02da1e527bcf75d6a401a"
+  },
+  {
+   "path": "/data/hexagrams/23.json",
+   "bytes": 10277,
+   "sha256": "5ed8f7de675d023aac4ce76467e75dedcc2e8dd9a32357cea5f1aa07220744b2"
+  },
+  {
+   "path": "/data/hexagrams/24.json",
+   "bytes": 10805,
+   "sha256": "c290a57dcf9a9bd6ca5f80523cffb567a9f38b87064f7d8381c04ff34a10357c"
+  },
+  {
+   "path": "/data/hexagrams/25.json",
+   "bytes": 10847,
+   "sha256": "83f235951baec9ed02ad292dba37ae2104a92b329843a620fca38fcd6360b1da"
+  },
+  {
+   "path": "/data/hexagrams/26.json",
+   "bytes": 10252,
+   "sha256": "1f08728a3926153afc80e9167e75fb240fd852a6db2cfe18aca68db8b8e0e889"
+  },
+  {
+   "path": "/data/hexagrams/27.json",
+   "bytes": 10690,
+   "sha256": "92e7f89368d3a910532deed5d06803b698c243824d103b7adf89fce3183d21f6"
+  },
+  {
+   "path": "/data/hexagrams/28.json",
+   "bytes": 10554,
+   "sha256": "0388caf53a1f5d3175b230ee335ce850f62c6ee17c3df994e831e0ad07b18fcd"
+  },
+  {
+   "path": "/data/hexagrams/29.json",
+   "bytes": 10475,
+   "sha256": "8657af64e5d3eaf2a25e58594b1d37b4b8d2532e4dd2868ac10e07bfa415ddff"
+  },
+  {
+   "path": "/data/hexagrams/30.json",
+   "bytes": 10248,
+   "sha256": "4337a45aa83f317264974e2f979b658d7fda237aa0c027add97165d69abd62f7"
+  },
+  {
+   "path": "/data/hexagrams/31.json",
+   "bytes": 10381,
+   "sha256": "1541609fab05339a65e6043383be89de23059c7354b6378f9891146c424e1a20"
+  },
+  {
+   "path": "/data/hexagrams/32.json",
+   "bytes": 10056,
+   "sha256": "9922597b21e0dba63e26df446232fc7b29e28148cac1e036c5a0c54cf52d9f93"
+  },
+  {
+   "path": "/data/hexagrams/33.json",
+   "bytes": 10095,
+   "sha256": "6baa076aaa45d005fb612afdea3f048a50ba30b319b857304fc94d4d812d2755"
+  },
+  {
+   "path": "/data/hexagrams/34.json",
+   "bytes": 10113,
+   "sha256": "f7546ea225eb92760bc069501302476167dce3a3c5f0f5918b3321647b073d36"
+  },
+  {
+   "path": "/data/hexagrams/35.json",
+   "bytes": 10360,
+   "sha256": "b11f7f3fd5074c1f96750fd99cc8c8a49a7f4055803fd91ede53c7fdb1611a01"
+  },
+  {
+   "path": "/data/hexagrams/36.json",
+   "bytes": 10776,
+   "sha256": "bf9f029922655941caddf3ae1cac6b3ebe2b358816f92a70a86b32227b7ec6d4"
+  },
+  {
+   "path": "/data/hexagrams/37.json",
+   "bytes": 10448,
+   "sha256": "cbdf5d364931e255d0aacdefb4cbefbb2ab33ecc4642cd9bdb192e4c718fee73"
+  },
+  {
+   "path": "/data/hexagrams/38.json",
+   "bytes": 10598,
+   "sha256": "cec9c2c30f3b6b192f81384e78fda8f493483e1ee3c137565d0f97419643bc64"
+  },
+  {
+   "path": "/data/hexagrams/39.json",
+   "bytes": 9832,
+   "sha256": "b2ef974c14e03eae62f40670cc288466c3b99eed61df433579c5c76301ad6b69"
+  },
+  {
+   "path": "/data/hexagrams/40.json",
+   "bytes": 10469,
+   "sha256": "d9c7322e9bb8b1949b8648addb28c97cdd58c8a21c4aa23a75857dbb6275d20f"
+  },
+  {
+   "path": "/data/hexagrams/41.json",
+   "bytes": 10786,
+   "sha256": "6b08f841fc353c0ac42bc96a36b922daf0210ce56efa68595ba25c5788194df2"
+  },
+  {
+   "path": "/data/hexagrams/42.json",
+   "bytes": 10554,
+   "sha256": "db6973c2c4b3999bcb71b76f5b019e020a419ea13b39b95be71b32791033af3d"
+  },
+  {
+   "path": "/data/hexagrams/43.json",
+   "bytes": 10477,
+   "sha256": "df3741640aaec89b49e6ed2f68366877ad99b9ac3bbde23bffcacf12546b0496"
+  },
+  {
+   "path": "/data/hexagrams/44.json",
+   "bytes": 10248,
+   "sha256": "8ad06f33bbe12a51ad2ff0ce933aa5c34dd0760eba1d2c689175d5c744a900f0"
+  },
+  {
+   "path": "/data/hexagrams/45.json",
+   "bytes": 10464,
+   "sha256": "00b715b699a9344db48316655e9e62e188d3d97671ae5be2ff777caa42fd7bc5"
+  },
+  {
+   "path": "/data/hexagrams/46.json",
+   "bytes": 9605,
+   "sha256": "850daa8db1df17d7302c0c5b56f90d1db6155e733caae4b12083531ef2907f2c"
+  },
+  {
+   "path": "/data/hexagrams/47.json",
+   "bytes": 10725,
+   "sha256": "17172bae1203df0cd9a4c0c1fb1553babba86c1d3d7b410abfb37666c3c27b9e"
+  },
+  {
+   "path": "/data/hexagrams/48.json",
+   "bytes": 10597,
+   "sha256": "eafcc8f775942531064771f3b8992a346485aa1cd497b2e9992291e44daa9cb6"
+  },
+  {
+   "path": "/data/hexagrams/49.json",
+   "bytes": 10328,
+   "sha256": "86fc6b1d89c2043f6df7f54dc945b02352e40ca744f84a408ee0d3a820b9c60d"
+  },
+  {
+   "path": "/data/hexagrams/50.json",
+   "bytes": 10339,
+   "sha256": "21a1cc6fc10ea2c653fe48e44cf215ff4117e3e401a87bc0e3d54fa6a8bddf68"
+  },
+  {
+   "path": "/data/hexagrams/51.json",
+   "bytes": 10714,
+   "sha256": "b68ad5e5da445de53d2c70dc49266e49f328a43f5d6fe4f53ad73065d9e4c3f4"
+  },
+  {
+   "path": "/data/hexagrams/52.json",
+   "bytes": 9865,
+   "sha256": "3397ca2f360fe420868293178ed7478c81267d3beefef07c14ffb8a4db31ff7b"
+  },
+  {
+   "path": "/data/hexagrams/53.json",
+   "bytes": 10297,
+   "sha256": "b501306bdd04b16bc9a41b72da65cade14ed9fda28ce844e94ec4c4cd665401f"
+  },
+  {
+   "path": "/data/hexagrams/54.json",
+   "bytes": 10564,
+   "sha256": "d1721cd4334fd72220f5c79303cde9cdd848462864168851f1b138c6b384d3c2"
+  },
+  {
+   "path": "/data/hexagrams/55.json",
+   "bytes": 10567,
+   "sha256": "bac23670a23c628dc6e39d3dca8e93ed4acbe8dc59d01075ee32de9dfa4b46b0"
+  },
+  {
+   "path": "/data/hexagrams/56.json",
+   "bytes": 10245,
+   "sha256": "3df79ee791289b817b12b75e980c2ebc2fb9812f3c8f040c199604435d2a5246"
+  },
+  {
+   "path": "/data/hexagrams/57.json",
+   "bytes": 10779,
+   "sha256": "a928538084fd7f234361a703fb4c5f7890a4c264d059785926a732b70242f614"
+  },
+  {
+   "path": "/data/hexagrams/58.json",
+   "bytes": 9510,
+   "sha256": "c14cd860f1f65e31480fc78cae1bc573a1a7d0562be718b198c7854a2d271799"
+  },
+  {
+   "path": "/data/hexagrams/59.json",
+   "bytes": 10232,
+   "sha256": "318a840bf75a56582affc4b04d2c485a17daa89a2063908b8a6539f5b4240131"
+  },
+  {
+   "path": "/data/hexagrams/60.json",
+   "bytes": 10039,
+   "sha256": "76454e51078bfa1d1be9d2288a92968f817f12538271afefdee7008420f3f887"
+  },
+  {
+   "path": "/data/hexagrams/61.json",
+   "bytes": 10505,
+   "sha256": "95c941ac33ce1f844ef215cd6c9ccf747154e289694202ddb8edda05478ff810"
+  },
+  {
+   "path": "/data/hexagrams/62.json",
+   "bytes": 10739,
+   "sha256": "8d897a40715db4840524b56cd0ddd69f4eff6c7f7932cab3437486d6863547be"
+  },
+  {
+   "path": "/data/hexagrams/63.json",
+   "bytes": 10292,
+   "sha256": "f55a57b87ae0f5f51e2ea479449edaf60daffbc27c62ab1919ee87ed88ff6cc9"
+  },
+  {
+   "path": "/data/hexagrams/64.json",
+   "bytes": 10381,
+   "sha256": "f86356fe97e91abadbcc91875122b1493d6084247aa6e5f227db32912a6d2a0e"
+  }
+ ],
+ "sources": [
+  {
+   "id": "jingwen",
+   "label": "『주역』 경문(괘사·효사)",
+   "detail": "통행본(왕필본·『주역전의』 계열) 원문. 저작권 보호 기간이 지난 공유 저작물입니다.",
+   "url": "https://ctext.org/book-of-changes/zh"
+  },
+  {
+   "id": "xiangzhuan",
+   "label": "『주역』 상전(대상전)",
+   "detail": "각 괘의 ‘象曰’ 구절 가운데 괘 전체의 상을 풀이한 대상(大象). 공유 저작물입니다.",
+   "url": "https://ctext.org/book-of-changes/zh"
+  },
+  {
+   "id": "xuguazhuan",
+   "label": "『주역』 서괘전",
+   "detail": "64괘가 이어지는 차례를 설명한 역전(易傳). 공유 저작물입니다.",
+   "url": "https://ctext.org/book-of-changes/xu-gua/zh"
+  },
+  {
+   "id": "shuoguazhuan",
+   "label": "『주역』 설괘전",
+   "detail": "8괘의 자연 상징과 성질, 방위 배열의 근거가 되는 역전. 공유 저작물입니다.",
+   "url": "https://ctext.org/book-of-changes/shuo-gua/zh"
+  },
+  {
+   "id": "daxue",
+   "label": "『예기』 대학",
+   "detail": "수신·제가·치국·평천하라는 단계 표현의 출처. 공유 저작물입니다.",
+   "url": "https://ctext.org/liji/da-xue/zh"
+  },
+  {
+   "id": "editorial",
+   "label": "주역의 원 편집부 번역·풀이",
+   "detail": "한국어 독음·번역·쉬운 풀이·질문·이야기 연결은 이 앱을 위해 새로 작성한 글입니다. 생성 도구의 도움을 받은 초안이며, 공개 출시 전에 원문 대조와 한국어 교열을 거쳐야 합니다."
+  }
+ ],
+ "fonts": [
+  {
+   "name": "Noto Serif KR",
+   "license": "SIL Open Font License 1.1",
+   "url": "https://fonts.google.com/noto/specimen/Noto+Serif+KR",
+   "usage": "제목·괘 이름·원문(빌드 때 내려받아 같은 도메인에서 제공)"
+  }
+ ]
+}

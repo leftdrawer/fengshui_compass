@@ -11,3 +11,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: node scripts/check-dom-ids.mjs
+      - run: node scripts/check-iching.mjs
