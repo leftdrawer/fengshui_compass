@@ -29,7 +29,7 @@
   const SOURCE_NAME = '주역의 원';
   const SOURCE_URL = 'https://iching-circle.pages.dev/';
   const DAILY_METHOD = 'uniform-crypto-v1';
-  const DATA_VERSION = '131';
+  const DATA_VERSION = '132';
   const RING_STEP = 360 / 64;
 
   // 나침반 궁 키 → 후천 괘 한자. xuankong-engine PALACE_DEFINITIONS.name 과 같아야 한다.

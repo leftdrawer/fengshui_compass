@@ -2,6 +2,13 @@
 
 > 규칙: 상위 `C:\AI Projects\AGENTS.md`. 최신 항목이 위, 한국어. 이 저장소는 **공개**(GitHub `leftdrawer/fengshui_compass`)이므로 개인정보·비밀값·손님 이야기를 적지 않는다.
 
+## 2026-11-10 — 앱 아이콘을 풍수 나침반 도안으로 교체
+
+- 무엇: 파비콘·애플 터치 아이콘·웹 매니페스트 아이콘을 금색 고리, 후천 팔괘, 붉은 바늘, 비취색 바탕의 새 도안으로 바꿈. 16·32은 스쿼클, 180 애플 터치는 풀블리드(iOS가 모서리를 깎음). 매니페스트는 스쿼클 192·512를 `any`, 풀블리드 192·512를 `maskable`로 나눔. 파일 이름은 `*-v2.png`라서 주소 자체가 바뀐다. 소셜 미리보기(`og:image`)는 투명 모서리가 없는 풀블리드 512(`app-icon-maskable-512-v2.png`)를 가리킴.
+- 왜: 홈 화면·탭·설치 아이콘이 같은 도안을 쓰게 하려고. Chrome은 설치한 웹 앱의 아이콘 주소를 바꾸지 않으면 그림이 바뀌어도 갱신하지 않으므로, 기존 파일을 덮어쓰지 않고 새 주소로 연결함.
+- 현재 상태: 서비스 워커는 이 저장소와 배포 사이트에 없음. 예전 파일(`favicon-32.png`, `apple-touch-icon.png`, `app-icon-192.png`, `app-icon-512.png`)은 그대로 두었고, 페이지와 매니페스트는 v2만 가리킴. 헤더의 은호당 서명 이미지는 그대로.
+- 관련 파일: `assets/favicon-16-v2.png`, `assets/favicon-32-v2.png`, `assets/apple-touch-icon-v2.png`, `assets/app-icon-192-v2.png`, `assets/app-icon-512-v2.png`, `assets/app-icon-maskable-192-v2.png`, `assets/app-icon-maskable-512-v2.png`, `manifest.webmanifest`, `compass.html`, `compass-mobile.html`
+
 ## 2026-11-10 — 주역의 원 자료 네 가지
 
 - 무엇: 8궁 팔괘 카드, 좌향 보조 괘(향 상괘·좌 하괘), 오늘의 괘(서울 날짜·균등 추첨), 문왕괘서 64괘 고리.
