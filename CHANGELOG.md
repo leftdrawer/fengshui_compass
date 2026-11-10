@@ -2,6 +2,15 @@
 
 > 규칙: 상위 `C:\AI Projects\AGENTS.md`. 최신 항목이 위, 한국어. 이 저장소는 **공개**(GitHub `leftdrawer/fengshui_compass`)이므로 개인정보·비밀값·손님 이야기를 적지 않는다.
 
+## 2026-11-10 — 주역의 원 자료 네 가지
+
+- 무엇: 8궁 팔괘 카드, 좌향 보조 괘(향 상괘·좌 하괘), 오늘의 괘(서울 날짜·균등 추첨), 문왕괘서 64괘 고리.
+- 자료: `data/` JSON. 글은 주역의 원 초안 그대로. 오행은 나침반 기존 값.
+- 고리: 복희·소옹 원도 순서는 출처가 없어 넣지 않음.
+- 빈 파일: `dual-star-corpus.json`은 코드가 요청하지만 저장소에 없음.
+- 같이 고침: `#houseAxisLine` 앞에 빈 텍스트 칸이 없어 궁반을 그릴 때 스크립트가 멈추던 것을 고침.
+- 관련 파일: `src/iching-circle.js`, `src/iching-circle-ui.js`, `src/iching-circle.css`, `src/compass-app.js`, `compass.html`, `compass-mobile.html`, `data/`
+
 ## 2026-10-31 — CHANGELOG 신설
 
 - 무엇: 이 프로젝트에 `CHANGELOG.md`가 없어(상위 규칙상 프로젝트마다 필요) 새로 만듦. 아래는 지금까지의 커밋 기록을 정리한 것이다.
