@@ -2,6 +2,13 @@
 
 > 규칙: 상위 `C:\AI Projects\AGENTS.md`. 최신 항목이 위, 한국어. 이 저장소는 **공개**(GitHub `leftdrawer/fengshui_compass`)이므로 개인정보·비밀값·손님 이야기를 적지 않는다.
 
+## 2026-11-11 — 현공 용어를 표준 말로 다시 맞춤
+
+- 무엇: '나는 별'을 비성(飛星)으로 되돌리고, 排盤을 뜻하던 '배반'을 궁반을 잡는 말로 바꿨다. 좌향·정향·겸향·하괘·체괘·유년·궁반·택운·원운·24산은 한 화면에서 한 번만 한자를 붙였다. 각도 상태는 배반이라고 쓰지 않고, 정향이면 하괘, 겸향이면 체괘라고 적는다. 캐시 번호는 134.
+- 왜: 보는 사람은 현공을 알거나 배우는 사람이다. 용어를 풀어 쓴 말이 오히려 교재와 어긋났다.
+- 현재 상태: 계산은 그대로다. 엔진이 돌려주는 중국어 방식 이름은 화면에 나올 때만 한국어로 바꾼다. 궁반 칸의 운성 숫자(一~九)는 반 위의 글자로 두었다. 주역 JSON의 괘 풀이는 현공 용어가 아니라 그대로 두었다.
+- 관련 파일: `compass.html`, `compass-mobile.html`, `src/compass-app.js`, `src/xuankong-beginner-guide.js`, `src/xuankong-explanations.js`, `src/compass-professional-data.js`, `src/iching-circle.js`, `src/iching-circle-ui.js`, `src/xuankong-home-advisor.js`, `src/verse-explanations.js`
+
 ## 2026-11-11 — 헷갈리는 화면 글자를 쉬운 말로
 
 - 무엇: 데스크톱·모바일 모두에서 운 이름, 비성 단계, 각도 상태, 유년 단계, 나침반 안내의 말을 바꿈. 바닥의 "은호당 제작 … 조언 도구" 소개 글을 뺐다. 은호당 주소는 주소만 링크로 남기고 "은호당 링크"와 화살표를 뺐다. 스크립트·스타일 주소의 캐시 번호를 133으로 맞춤.

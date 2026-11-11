@@ -14,7 +14,7 @@
  * 주역에서 하괘는 안·가까운 곳, 상괘는 바깥·먼 곳으로 읽는다.
  * 집의 좌(坐)는 집이 기대 앉은 뒤쪽이고, 향(向)은 집이 열어 바라보는 앞쪽이다.
  * 그래서 좌를 하괘, 향을 상괘로 둔다.
- * 현공비성 배반과는 별도의 보조 해석이다. 주역의 원에는 좌향으로 괘를 만드는 규칙이 없다.
+ * 현공 비성 궁반과는 별도의 보조 해석이다. 주역의 원에는 좌향으로 괘를 만드는 규칙이 없다.
  * 좌와 향은 항상 180° 반대 궁이므로, 이 규칙은 후천팔괘의 맞짝 8괘만 나온다.
  */
 (function (root, factory) {
@@ -29,7 +29,7 @@
   const SOURCE_NAME = '주역의 원';
   const SOURCE_URL = 'https://iching-circle.pages.dev/';
   const DAILY_METHOD = 'uniform-crypto-v1';
-  const DATA_VERSION = '133';
+  const DATA_VERSION = '134';
   const RING_STEP = 360 / 64;
 
   // 나침반 궁 키 → 후천 괘 한자. xuankong-engine PALACE_DEFINITIONS.name 과 같아야 한다.
