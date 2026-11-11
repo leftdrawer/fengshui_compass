@@ -354,7 +354,7 @@
     houseKey = nextKey;
     const spec = core.stackSpec(core.HOUSE_HEXAGRAM_STACK);
     const intro = `<div class="iching-house-head"><div><p class="eyebrow">보조 해석</p><h3>좌향으로 본 집의 괘</h3></div><span class="iching-supplement">현공비성 아님</span></div>
-      <p class="iching-note">쌓기: ${esc(spec.label)}. 현공 비성 배반이 아닙니다. 좌와 향은 반대 궁이라 맞짝 8괘 중 하나이고, 같은 궁의 세 산은 같은 괘입니다.</p>`;
+      <p class="iching-note">쌓기: ${esc(spec.label)}. 현공 비성(飛星) 궁반이 아닙니다. 좌와 향은 반대 궁이라 맞짝 8괘 중 하나이고, 같은 궁의 세 산은 같은 괘입니다.</p>`;
     if (!corpus) {
       nodes.house.innerHTML = `${intro}<p class="iching-status">${esc(loadError || '주역 자료를 불러오는 중입니다.')}</p>`;
       return;

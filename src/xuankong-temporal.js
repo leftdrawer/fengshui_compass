@@ -181,7 +181,7 @@
 
   function analyzeCurrentHomeActions({chart,sAssessment,annual,monthly,placements={}}){
     const overlays=overlayTemporalStars(chart,annual,monthly),housePeriod=chart.period||chart.p,byPalace=Object.freeze(overlays.map(overlay=>analyzeTemporalPalace({overlay,housePeriod,sAssessment,placements}))),hasPlacement=Object.values(placements||{}).some(items=>Array.isArray(items)&&items.length),sorted=[...byPalace].sort((a,b)=>priority[b.actionLevel]-priority[a.actionLevel]||b.items.length-a.items.length||a.palace.localeCompare(b.palace)),annualAttention=sorted.filter(row=>[ACTION_LEVEL.AVOID_DISTURBANCE,ACTION_LEVEL.KEEP_QUIET].includes(row.actionLevel)).slice(0,3),annualUse=sorted.filter(row=>row.actionLevel===ACTION_LEVEL.USE_MORE).slice(0,3),monthlyAttention=sorted.filter(row=>CAUTION_STARS.has(row.trace.monthlyStar)).slice(0,3);
-    return Object.freeze({hasPlacement,byPalace,annualAttention:Object.freeze(annualAttention),annualUse:Object.freeze(annualUse),monthlyAttention:Object.freeze(monthlyAttention),emptyStateAction:hasPlacement?'':'3단계에서 방을 표시하면 사이트가 방위를 실제 방으로 바로 옮겨 줍니다.',source:SOURCE_ACTION});
+    return Object.freeze({hasPlacement,byPalace,annualAttention:Object.freeze(annualAttention),annualUse:Object.freeze(annualUse),monthlyAttention:Object.freeze(monthlyAttention),emptyStateAction:hasPlacement?'':'5단계 「방 배치」에 방을 표시하면 방위를 실제 방으로 옮겨 읽습니다.',source:SOURCE_ACTION});
   }
 
   function buildTemporalAssessment({chart,sAssessment,placements={},analysisDate=new Date(),timezone='UTC'}){
