@@ -16,6 +16,10 @@
     forms:['橫樑','柱','樹木','植物','煙囪','尖塔','電桿','橋口','尖角','房屋缺角','房屋凸角']
   };
   const items=Object.values(groups).flat();
+  function koJosa(word,pair){const text=String(word??'');let jong=-1;for(let i=text.length-1;i>=0;i--){const code=text.charCodeAt(i);if(code>=0xAC00&&code<=0xD7A3){jong=(code-0xAC00)%28;break}if(code>=48&&code<=57){jong=[21,8,0,16,0,0,7,8,8,0][code-48];break}}if(jong<0)jong=0;const has=jong!==0;return pair==='은는'?(has?'은':'는'):pair==='이가'?(has?'이':'가'):pair==='을를'?(has?'을':'를'):pair==='과와'?(has?'과':'와'):pair==='으로'?((has&&jong!==8)?'으로':'로'):''}
+  const koWith=(word,pair)=>`${word}${koJosa(word,pair)}`;
+  const KO_ITEM={'玄關':'현관','客廳':'거실','餐廳':'식당','主臥室':'안방','次臥室':'작은방','兒童房':'아이방','長輩房':'어르신방','書房':'서재','工作室':'작업실','廚房':'주방','浴室':'욕실','廁所':'화장실','儲藏室':'창고방','更衣室':'드레스룸','其他房間':'기타 공간','大門':'대문','次要門':'보조문','窗戶':'창문','陽台':'발코니','天井／採光井':'채광정','床位':'침대 자리','嬰兒床':'아기 침대','書桌／工作位':'책상','辦公桌':'사무 책상','沙發':'소파','餐桌':'식탁','衣櫃':'옷장','鞋櫃':'신발장','鏡子':'거울','神位':'신위','其他家具':'기타 가구','爐灶':'가스레인지','洗手盆／取水處':'세면대','浴缸':'욕조','飲水機':'정수기','魚缸':'어항','水景':'수경','其他動水':'기타 동수','電視':'TV','冰箱':'냉장고','洗衣機':'세탁기','冷氣':'에어컨','空調／風口':'바람길','走道／通道':'복도','樓梯':'계단','電梯':'엘리베이터','收銀／辦公位':'계산대','道路':'도로','動水':'동수','空曠處':'빈터','低處':'낮은 곳','高樓':'높은 건물','實山':'실산','橫樑':'대들보','柱':'기둥','樹木':'나무','植物':'식물','煙囪':'굴뚝','尖塔':'첨탑','電桿':'전봇대','橋口':'교량 입구','尖角':'모서리','房屋缺角':'결각','房屋凸角':'돌출각'};
+  const koName=item=>KO_ITEM[item]||item;
   const itemGroup=Object.fromEntries(Object.entries(groups).flatMap(([group,list])=>list.map(item=>[item,group])));
   const longStay=new Set(['主臥室','次臥室','兒童房','長輩房','書房','工作室','床位','嬰兒床','書桌／工作位','辦公桌','神位','衣櫃']);
   const activeUse=new Set(['玄關','客廳','餐廳','廚房','大門','次要門','窗戶','陽台','爐灶','洗手盆／取水處','飲水機','魚缸','水景','其他動水','電視','洗衣機','冷氣','空調／風口','走道／通道','樓梯','電梯','收銀／辦公位','道路','動水','空曠處','低處']);
@@ -95,7 +99,7 @@
     '走道／通道':'길고 곧거나 좁거나 통행이 잦은 통로는 조급함과 부딪힘을 키웁니다. 문·침대·불을 직접 찌르면 동선을 우선 조정해야 합니다.',
     樓梯:'계단 중심보다 계단 입구와 실제 오르내리는 경로가 더 중요합니다. 조명·미끄럼 방지·손잡이와 문·침대를 바로 향하는지를 먼저 확인하세요.',
     電梯:'엘리베이터 문이 가까운 거리에서 집 문을 정면으로 향하면 빛·소리·사람 흐름이 바로 문 앞까지 옵니다. 꺾임·현관·거리가 있으면 비중을 낮춰야 합니다.',
-    '收銀／辦公位':'거래 활동은 향성을, 고정 좌석은 산성(山星)을 봅니다. 둘이 한 지점에 섞이면 고객 동선과 업무 집중이 서로 방해하기 쉽습니다.',
+    '收銀／辦公位':'거래가 오가는 쪽은 향성을 보고, 오래 앉는 자리는 산성을 봅니다. 두 가지가 한 점에 섞이면 손님 동선과 일에 집중하는 일이 서로 방해하기 쉽습니다.',
     道路:'도로는 최종 진입로·흐름·차속·거리를 봐야 합니다. 번잡함이 곧 왕성함은 아니며, 직충(直沖)과 교통 안전은 작은 소품으로 상쇄할 수 없습니다.',
     動水:'외부의 실제 물이나 큰 유동 수체의 작용은 실내 작은 수경보다 훨씬 큽니다. 오고 감·모임과 흩어짐·거리, 그리고 주요 개구부를 향하는지를 봐야 합니다.',
     空曠處:'개방은 향성을 받아들이는 데 도움이 되지만, 지나치게 노출되거나 강풍이 있거나 사방에 기댈 데가 없으면 기운이 모이지 않고 오래 머물기 어려울 수 있습니다.',
@@ -140,18 +144,20 @@
     if(palace==='C'&&(activeUse.has(item)||fireItems.has(item)||waterItems.has(item)))score-=6;
     score=Math.max(0,Math.min(100,Math.round(score)));
     const status=statusFromScore(score),mainStar=axis==='mountain'?ordered.mountain:axis==='facing'?ordered.facing:null,layerReason=axis==='both'?`오래 머무르면 ${ordered.mountain} 성(星)의 영향을 받고, 일상 활동은 ${ordered.facing} 성을 자극합니다`:axis==='mountain'?`${mainStar} 성이 장시간 사용에 직접 영향을 줍니다`:`${mainStar} 성이 문 여닫음·이동·설비로 반복해 자극됩니다`;
-    const why=`${item}은(는) ${axisCopy[axis]}, ${pm.name}에서 ${layerReason}. ${normalize(base[1])}`;
-    const itemProblem=itemRisk[item]||fallbackRisk[item]||`${item}을(를) 적합하지 않은 위치에 쓰면 ${risks[group]} 수 있습니다.`;
+    const name=koName(item);
+    const why=`${koWith(name,'은는')} ${axisCopy[axis]}, ${pm.name}에서 ${layerReason}. ${normalize(base[1])}`;
+    const itemProblem=itemRisk[item]||fallbackRisk[item]||`${koWith(name,'을를')} 맞지 않는 자리에 두면 이런 일이 생깁니다. ${risks[group]}`;
     const relevantRisk=axis==='mountain'?starRisk[ordered.mountain]:axis==='facing'?starRisk[ordered.facing]:`${starRisk[ordered.mountain]}, 그리고 ${starRisk[ordered.facing]}`;
-    const problem=status==='適合'||status==='不錯'?`지금은 ${axis==='mountain'?starGood[ordered.mountain]:axis==='facing'?starGood[ordered.facing]:`${starGood[ordered.mountain]}와(과) ${starGood[ordered.facing]}`}을(를) 비교적 잘 활용할 수 있습니다. 그래도 실제 누수·소음·과열·통로 막힘·부딪힘은 피해야 합니다.`:status==='一般'?`사용할 수는 있지만, 배치가 나쁘면 ${relevantRisk}이(가) 나타날 수 있습니다. ${itemProblem}`:`${item}의 주요 기능을 여기에 두는 것은 권하지 않습니다. ${relevantRisk}이(가) 나타나기 쉽기 때문입니다. ${itemProblem}`;
+    const goodCore=axis==='mountain'?starGood[ordered.mountain]:axis==='facing'?starGood[ordered.facing]:`${koWith(starGood[ordered.mountain],'과와')} ${starGood[ordered.facing]}`;
+    const problem=status==='適合'||status==='不錯'?`지금은 ${koWith(goodCore,'을를')} 비교적 잘 살릴 수 있습니다. 그래도 실제로 물이 새거나, 시끄럽거나, 너무 뜨겁거나, 통로가 막히거나, 부딪히는 일은 피해야 합니다.`:status==='一般'?`사용할 수는 있지만, 배치가 나쁘면 ${koWith(relevantRisk,'이가')} 나타날 수 있습니다. ${itemProblem}`:`${name}의 주된 쓰임을 여기에 두는 것은 권하지 않습니다. ${koWith(relevantRisk,'이가')} 나타나기 쉽기 때문입니다. ${itemProblem}`;
     const target=axis==='mountain'?'조용하고 기댈 곳이 있으며 문바람이 적고 사람이 계속 지나다니지 않는 위치를 우선 고르세요':axis==='facing'?'개방적이고 통풍이 잘 되며 동선이 분명하고 일상 활동에 알맞은 위치를 우선 고르세요':'안심하고 머물 수 있으면서 동선이 서로 방해하지 않는 위치를 우선 고르세요';
     const modeAction={
-      buy:`격국을 아직 고를 수 있다면 ${target}. 이 궁은 ${normalize(base[2])}(으)로 바꾸는 편이 더 알맞습니다.`,
+      buy:`격국을 아직 고를 수 있다면 ${target}. 이 궁은 ${koWith(normalize(base[2]),'으로')} 바꾸는 편이 더 알맞습니다.`,
       lived:`방을 옮길 수 없다면, 먼저 침대·책상·소파·불 같은 실제 사용 지점을 본궁의 불리한 작은 칸 밖으로 옮기고, 소음·열원·물·빠른 통행·공사를 줄이세요.`,
       rent:`옮길 수 있는 침대·책상·소파·전자기기를 먼저 이동하세요. 벽을 바꿀 수 없을 때는 사용 위치·문 여닫는 빈도·조명·수납·통로 확보로 영향을 줄이세요.`
     }[serviceMode];
     const action=(status==='適合'||status==='不錯')?`${target}. 안전·청결·실제 사용을 유지하면 되고, 상징적인 소품을 더 쌓을 필요는 없습니다.`:modeAction;
-    return {pair:ordered.value,palace,item,period,serviceMode,status,score,axis,why,problem,target,action,avoid:`${normalize(base[3])}을(를) 피하고, ${relevantRisk}을(를) 키우는 실제 조건도 늘리지 마세요.`,principle:`먼저 ${needs[group]}을(를) 보세요. ${risks[group]}.`,source:'《심씨현공학(沈氏玄空學)》의 산성·향성, 원운(元運) 왕쇠와 내외 육사(六事) 원칙을 우선하며, 옛 비결은 성(星) 조합 원문 대조용으로만 씁니다.'};
+    return {pair:ordered.value,palace,item,period,serviceMode,status,score,axis,why,problem,target,action,avoid:`${koWith(normalize(base[3]),'을를')} 피하고, ${koWith(relevantRisk,'을를')} 키우는 실제 조건도 늘리지 마세요.`,principle:`먼저 ${koWith(needs[group],'을를')} 보세요. ${risks[group]}.`,source:'《심씨현공학(沈氏玄空學)》의 산성·향성, 원운 왕쇠와 안팎의 육사 원칙을 먼저 보고, 옛 비결은 별 조합 원문을 대조할 때만 씁니다.'};
   }
   function rank({item,period=9,serviceMode='lived',chart}){
     if(!Array.isArray(chart))return [];

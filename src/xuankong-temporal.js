@@ -20,6 +20,10 @@
   const BRANCHES=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
   const MONTH_BRANCHES=['寅','卯','辰','巳','午','未','申','酉','戌','亥','子','丑'];
   const PALACE_DIRECTIONS=Object.freeze({SE:'남동쪽',S:'남쪽',SW:'남서쪽',E:'동쪽',C:'집 중앙',W:'서쪽',NE:'북동쪽',N:'북쪽',NW:'북서쪽'});
+  function koJosa(word,pair){const text=String(word??'');let jong=-1;for(let i=text.length-1;i>=0;i--){const code=text.charCodeAt(i);if(code>=0xAC00&&code<=0xD7A3){jong=(code-0xAC00)%28;break}if(code>=48&&code<=57){jong=[21,8,0,16,0,0,7,8,8,0][code-48];break}}if(jong<0)jong=0;const has=jong!==0;return pair==='은는'?(has?'은':'는'):pair==='이가'?(has?'이':'가'):pair==='을를'?(has?'을':'를'):pair==='과와'?(has?'과':'와'):pair==='으로'?((has&&jong!==8)?'으로':'로'):''}
+  const koWith=(word,pair)=>`${word}${koJosa(word,pair)}`;
+  const ITEM_KO={'大門':'대문','主臥室':'안방','次臥室':'작은방','兒童房':'아이방','長輩房':'어르신방','客廳':'거실','書房':'서재','工作室':'작업실','廚房':'주방','浴室':'욕실','廁所':'화장실','玄關':'현관','餐廳':'식당','儲藏室':'창고방','更衣室':'드레스룸','床位':'침대','書桌／工作位':'책상','辦公桌':'사무 책상','窗戶':'창문','陽台':'발코니'};
+  const koItem=item=>ITEM_KO[item]||item;
   const ACTION_LEVEL=Object.freeze({USE_MORE:'USE_MORE',NORMAL:'NORMAL',KEEP_QUIET:'KEEP_QUIET',AVOID_DISTURBANCE:'AVOID_DISTURBANCE',TEMPORARY_CAUTION:'TEMPORARY_CAUTION'});
   const SOURCE_ANNUAL=Object.freeze({level:'SHEN_CHART',corpus:'《심씨현공학(沈氏玄空學)》',book:'《현공집요(玄空輯要)》／《현공고의(玄空古義)》',section:'연 자백 구성 입중표／연월일시 자백도'});
   const SOURCE_MONTHLY=Object.freeze({level:'SHEN_CHART',corpus:'《심씨현공학(沈氏玄空學)》',book:'《현공집요(玄空輯要)》／《현공고의(玄空古義)》',section:'월 자백 구성 입중표／연월일시 자백도'});
@@ -152,13 +156,13 @@
   function targetLabel(palace,items){
     if(!items.length)return PALACE_DIRECTIONS[palace];
     const primaryOrder=['大門','主臥室','次臥室','兒童房','長輩房','客廳','書房','工作室','廚房','浴室','廁所','玄關','餐廳','儲藏室','更衣室','床位','書桌／工作位','辦公桌','窗戶','陽台'],ordered=[...items].sort((a,b)=>{const ai=primaryOrder.indexOf(a),bi=primaryOrder.indexOf(b);return (ai<0?999:ai)-(bi<0?999:bi)});
-    return ordered.length<=3?`우리 집의 ${ordered.join('·')}`:`우리 집의 ${ordered.slice(0,3).join('·')} 등의 위치`;
+    const names=ordered.map(koItem);return names.length<=3?`우리 집의 ${names.join('·')}`:`우리 집의 ${names.slice(0,3).join('·')} 등의 자리`;
   }
   function useMoreCopy(target,items){
-    if(items.some(item=>/書房|工作室|書桌|辦公桌/.test(item)))return `${target}은(는) 올해 독서·업무 등 일상 사용을 유지하거나 늘리기에 알맞습니다.`;
-    if(items.some(item=>/臥室|床/.test(item)))return `${target}은(는) 올해 안정된 생활 리듬을 유지하기에 알맞으며, 유년 때문에 크게 옮길 필요가 없습니다.`;
-    if(items.some(item=>/大門|玄關|客廳|餐廳/.test(item)))return `${target}은(는) 올해 정상적으로 활동과 사용을 늘리기에 알맞습니다.`;
-    return `${target}은(는) 올해 비교적 쓸 가치가 있는 위치이니 일상 활동을 우선 배치할 수 있습니다.`;
+    if(items.some(item=>/書房|工作室|書桌|辦公桌/.test(item)))return `${koWith(target,'은는')} 올해 독서나 업무처럼 평소 쓰임을 유지하거나 조금 늘리기에 알맞습니다.`;
+    if(items.some(item=>/臥室|床/.test(item)))return `${koWith(target,'은는')} 올해 생활 리듬을 안정적으로 유지하기에 알맞습니다. 유년 때문에 크게 옮길 필요는 없습니다.`;
+    if(items.some(item=>/大門|玄關|客廳|餐廳/.test(item)))return `${koWith(target,'은는')} 올해 평소처럼 활동하고 쓰기 좋습니다.`;
+    return `${koWith(target,'은는')} 올해 비교적 쓸 만한 자리이니, 일상 활동을 우선 두어도 됩니다.`;
   }
 
   function analyzeTemporalPalace(input){
@@ -169,13 +173,13 @@
     else if(CAUTION_STARS.has(monthlyStar))actionLevel=ACTION_LEVEL.TEMPORARY_CAUTION;
     else if(POSITIVE_STARS.has(annualStar)&&natalStrength+annualModifier+monthlyModifier>=2&&!fullRisk)actionLevel=ACTION_LEVEL.USE_MORE;
     let annualAction,monthlyAction;
-    if(actionLevel===ACTION_LEVEL.AVOID_DISTURBANCE)annualAction=`${target}은(는) 올해 벽 두드리기·뚫기·큰 공사를 되도록 피하세요. 일상 사용은 평소대로입니다.`;
-    else if(actionLevel===ACTION_LEVEL.KEEP_QUIET)annualAction=annualStar===2?`${target}은(는) 올해 청결·건조·통풍과 안정된 사용을 위주로 하세요.`:`${target}은(는) 올해 조용함과 안정된 사용을 위주로 하세요.`;
+    if(actionLevel===ACTION_LEVEL.AVOID_DISTURBANCE)annualAction=`${koWith(target,'은는')} 올해 벽을 두드리거나 뚫거나 크게 공사하는 일을 되도록 피하세요. 일상에서 쓰는 것은 평소와 같습니다.`;
+    else if(actionLevel===ACTION_LEVEL.KEEP_QUIET)annualAction=annualStar===2?`${koWith(target,'은는')} 올해는 깨끗하고 건조하며 바람이 통하게, 안정적으로 쓰세요.`:`${koWith(target,'은는')} 올해는 조용하고 안정적으로 쓰세요.`;
     else if(actionLevel===ACTION_LEVEL.USE_MORE)annualAction=useMoreCopy(target,items);
-    else annualAction=`${target}은(는) 올해 정상적으로 사용하면 됩니다.`;
-    if(CAUTION_STARS.has(monthlyStar))monthlyAction=monthlyStar===5?`${target}은(는) 이번 달 두드림과 공사를 잠시 줄이세요.`:monthlyStar===2?`${target}은(는) 이번 달 청결·건조·통풍에 더 유의하세요.`:`${target}은(는) 이번 달 소음·부딪힘·공사를 잠시 줄이세요.`;
-    else if(POSITIVE_STARS.has(monthlyStar)&&actionLevel===ACTION_LEVEL.USE_MORE)monthlyAction=`${target}은(는) 이번 달 지금의 사용 배치를 유지할 수 있습니다.`;
-    else monthlyAction=`${target}은(는) 이번 달 추가로 조정할 사항이 없습니다.`;
+    else annualAction=`${koWith(target,'은는')} 올해 평소처럼 쓰면 됩니다.`;
+    if(CAUTION_STARS.has(monthlyStar))monthlyAction=monthlyStar===5?`${koWith(target,'은는')} 이번 달에는 두드리기와 공사를 잠시 줄이세요.`:monthlyStar===2?`${koWith(target,'은는')} 이번 달에는 청결, 건조, 통풍에 더 신경 쓰세요.`:`${koWith(target,'은는')} 이번 달에는 소음, 부딪힘, 공사를 잠시 줄이세요.`;
+    else if(POSITIVE_STARS.has(monthlyStar)&&actionLevel===ACTION_LEVEL.USE_MORE)monthlyAction=`${koWith(target,'은는')} 이번 달에는 지금 쓰는 방식을 유지해도 됩니다.`;
+    else monthlyAction=`${koWith(target,'은는')} 이번 달에 더 손볼 일은 없습니다.`;
     return Object.freeze({palace,location:PALACE_DIRECTIONS[palace],items:Object.freeze(items),target,actionLevel,annualAction,monthlyAction,natalStrength,annualModifier,monthlyModifier,trace:Object.freeze({housePeriod,natal,annualStar,monthlyStar,localRelationCount:localRows.length,fullRisk,rule:'NATAL > PERIOD > ANNUAL > MONTHLY'})});
   }
 

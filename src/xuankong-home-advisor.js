@@ -10,6 +10,10 @@
   const FIXABILITY_LABEL=Object.freeze({EASY:'쉽게 조정 가능',MOVABLE:'가구 이동 필요',RENOVATION:'수리 필요',FIXED:'주택 고정 조건'});
   const COST_LABEL=Object.freeze({NONE:'비용 들지 않음',LOW:'소액 비용 가능',MOVING:'운반 도움 필요 가능',PROJECT:'전문가 현장 평가 필요'});
   const PALACE_LABEL=Object.freeze({SE:'남동쪽 구역',S:'남쪽 구역',SW:'남서쪽 구역',E:'동쪽 구역',C:'중앙 구역',W:'서쪽 구역',NE:'북동쪽 구역',N:'북쪽 구역',NW:'북서쪽 구역'});
+  function koJosa(word,pair){const text=String(word??'');let jong=-1;for(let i=text.length-1;i>=0;i--){const code=text.charCodeAt(i);if(code>=0xAC00&&code<=0xD7A3){jong=(code-0xAC00)%28;break}if(code>=48&&code<=57){jong=[21,8,0,16,0,0,7,8,8,0][code-48];break}}if(jong<0)jong=0;const has=jong!==0;return pair==='은는'?(has?'은':'는'):pair==='이가'?(has?'이':'가'):pair==='을를'?(has?'을':'를'):pair==='과와'?(has?'과':'와'):pair==='으로'?((has&&jong!==8)?'으로':'로'):''}
+  const koWith=(word,pair)=>`${word}${koJosa(word,pair)}`;
+  const ITEM_KO={床位:'침대',嬰兒床:'아기 침대','書桌／工作位':'책상',辦公桌:'사무 책상',廚房:'주방',爐灶:'가스레인지',廁所:'화장실',浴室:'욕실',衣櫃:'옷장',鞋櫃:'신발장',高樓:'높은 건물',實山:'실산',大門:'대문',次要門:'보조문'};
+  const koItem=item=>ITEM_KO[item]||item;
   const SLEEP_ITEMS=Object.freeze(['床位','嬰兒床']);
   const DESK_ITEMS=Object.freeze(['書桌／工作位','辦公桌']);
   const DOOR_ITEMS=Object.freeze(['大門','次要門']);
@@ -56,10 +60,11 @@
       const alternative=bestAlternative({item,currentPalace,chart,placementChart,evaluate,rank,mode});
       const current=typeof evaluate==='function'?evaluate({item,palace:currentPalace,index:Object.keys(PALACE_LABEL).indexOf(currentPalace),mode}):null;
       if(alternative){
-        const isBed=SLEEP_ITEMS.includes(item),title=`${isBed?'침대':'책상'}을(를) ${PALACE_LABEL[alternative.best.palace]}(으)로 옮기기`;
-        actions.push(action({id:`move-${item}`,family:isBed?ACTION_FAMILY.MOVE_BED:ACTION_FAMILY.MOVE_DESK,title,reason:`${PALACE_LABEL[alternative.best.palace]}이(가) 지금의 ${PALACE_LABEL[currentPalace]}보다 ${isBed?'장시간 휴식':'업무와 독서'}에 더 알맞습니다. 위치를 옮길 수 있으면 우선 조정하세요.`,fixability:isBed?FIXABILITY.MOVABLE:FIXABILITY.EASY,cost:isBed?'MOVING':'NONE',duration:'장기',priority:isBed?84:88,source:'심씨 택명반＋기존 배치 엔진',trace:[trace('위치 비교',{item,currentPalace,currentScore:alternative.current.score,recommendedPalace:alternative.best.palace,recommendedScore:alternative.best.score})]}));
+        const isBed=SLEEP_ITEMS.includes(item),noun=isBed?'침대':'책상',from=PALACE_LABEL[currentPalace],to=PALACE_LABEL[alternative.best.palace],title=`${koWith(noun,'을를')} ${koWith(to,'으로')} 옮기기`;
+        actions.push(action({id:`move-${item}`,family:isBed?ACTION_FAMILY.MOVE_BED:ACTION_FAMILY.MOVE_DESK,title,reason:`${koWith(to,'이가')} 지금의 ${from}보다 ${isBed?'오래 쉬는 데':'일하고 읽는 데'} 더 알맞습니다. 옮길 수 있으면 먼저 조정하세요.`,fixability:isBed?FIXABILITY.MOVABLE:FIXABILITY.EASY,cost:isBed?'MOVING':'NONE',duration:'장기',priority:isBed?84:88,source:'심씨 택명반＋기존 배치 엔진',trace:[trace('위치 비교',{item,currentPalace,currentScore:alternative.current.score,recommendedPalace:alternative.best.palace,recommendedScore:alternative.best.score})]}));
       }else if(current&&['適合','不錯'].includes(current.status)){
-        actions.push(action({id:`keep-${item}`,title:`${item}은(는) 지금 위치에 둘 수 있음`,reason:`지금 ${PALACE_LABEL[currentPalace]}이(가) ${SLEEP_ITEMS.includes(item)?'휴식':'업무와 독서'}에 알맞으니 풍수 때문에 옮길 필요가 없습니다.`,fixability:FIXABILITY.EASY,cost:'NONE',duration:'장기',priority:35,source:'심씨 택명반＋기존 배치 엔진',trace:[trace('현재 위치',{item,currentPalace,status:current.status,score:current.score})]}));
+        const keepName=SLEEP_ITEMS.includes(item)?'침대':'책상',here=PALACE_LABEL[currentPalace];
+        actions.push(action({id:`keep-${item}`,title:`${koWith(keepName,'은는')} 지금 위치에 둘 수 있습니다`,reason:`지금 ${koWith(here,'이가')} ${SLEEP_ITEMS.includes(item)?'쉬는 데':'일하고 읽는 데'} 알맞으니, 풍수 때문에 옮길 필요는 없습니다.`,fixability:FIXABILITY.EASY,cost:'NONE',duration:'장기',priority:35,source:'심씨 택명반＋기존 배치 엔진',trace:[trace('현재 위치',{item,currentPalace,status:current.status,score:current.score})]}));
       }
     }
     return actions;
@@ -69,7 +74,7 @@
     const doorPalace=locationsOf(placements,'大門')[0];if(!doorPalace)return [];
     const actions=[action({id:'clear-door',family:ACTION_FAMILY.KEEP_ENTRY_CLEAR,title:'대문 주변을 트이게 유지하기',reason:'대문은 주택의 주요 출입과 통풍 자리입니다. 쌓인 물건과 큰 가구를 치워 문이 완전히 열리고 다니는 데 막힘이 없게 하세요.',fixability:FIXABILITY.EASY,cost:'NONE',duration:'장기',priority:78,source:'《심씨현공학(沈氏玄空學)·양택삼십칙(陽宅三十則)》 대문 납기',trace:[trace('대문 위치',{palace:doorPalace})]})];
     const blockers=tagsFor(placements,doorPalace).filter(item=>INTERNAL_BLOCKERS.includes(item));
-    if(blockers.length)actions.push(action({id:'door-blocker',family:ACTION_FAMILY.REDUCE_BLOCKAGE,title:`대문 옆의 ${blockers[0]} 치우기`,reason:'이 방향은 원래 쓸 수 있지만 입구가 큰 가구에 가려져 있습니다. 여유가 되면 가림을 먼저 줄이세요.',fixability:FIXABILITY.MOVABLE,cost:'MOVING',duration:'장기',priority:91,source:'《양택삼십칙(陽宅三十則)》 왕문수폐(旺門受蔽)',trace:[trace('같은 궁 가림',{palace:doorPalace,blockers})]}));
+    if(blockers.length)actions.push(action({id:'door-blocker',family:ACTION_FAMILY.REDUCE_BLOCKAGE,title:`대문 옆의 ${koItem(blockers[0])} 치우기`,reason:'이 방향은 원래 쓸 수 있지만 입구가 큰 가구에 가려져 있습니다. 여유가 되면 가림을 먼저 줄이세요.',fixability:FIXABILITY.MOVABLE,cost:'MOVING',duration:'장기',priority:91,source:'《양택삼십칙(陽宅三十則)》 왕문수폐(旺門受蔽)',trace:[trace('같은 궁 가림',{palace:doorPalace,blockers})]}));
     const secondary=locationsOf(placements,'次要門')[0];
     if(secondary&&typeof rank==='function'&&Array.isArray(placementChart)){
       const rows=rank({item:'大門',period:chart.p||chart.period,serviceMode:mode,chart:placementChart}),main=rows.find(row=>row.palace===doorPalace),other=rows.find(row=>row.palace===secondary);
@@ -90,7 +95,7 @@
         if(near&&direct)actions.push(action({id:`road-${palace}`,family:ACTION_FAMILY.FIXED_PROPERTY_WARNING,title:'가까운 직충 도로를 집 선택의 중점으로',reason:`${PALACE_LABEL[palace]}의 도로가 가깝고 주택을 직충합니다. 이는 주택 고정 조건이라 가구를 옮겨도 실제로 바꿀 수 없습니다.${mode==='buy'?' 계약 전 비중을 높여야 합니다.':' 일상에서 먼저 소음·조명·출입 안전을 처리하세요.'}`,fixability:FIXABILITY.FIXED,cost:'PROJECT',duration:mode==='buy'?'계약 전 확인':'장기',priority:mode==='buy'?96:70,source:'《양택삼십칙(陽宅三十則)》 도로 원근과 입로',trace:[trace('도로',{palace,...detail})]}));
       }
       const external=tagsFor(placements,palace).filter(item=>EXTERNAL_BLOCKERS.includes(item));
-      if(external.length)fixed.push(Object.freeze({title:`${PALACE_LABEL[palace]} 외부 가림`,summary:`${external.join('·')}이(가) 표시됨. 이는 외부 고정 조건이라 실내 가구를 옮겨도 없앨 수 없습니다.`,fixability:FIXABILITY.FIXED,fixabilityLabel:FIXABILITY_LABEL.FIXED}));
+      if(external.length){const outside=external.map(koItem).join('·');fixed.push(Object.freeze({title:`${PALACE_LABEL[palace]} 바깥의 가림`,summary:`${koWith(outside,'이가')} 표시되어 있습니다. 집 바깥의 고정 조건이라, 실내 가구를 옮겨도 없앨 수 없습니다.`,fixability:FIXABILITY.FIXED,fixabilityLabel:FIXABILITY_LABEL.FIXED}));}
     }
     return {actions,fixed};
   }
@@ -106,7 +111,7 @@
   function fixedServiceActions({placements,mode}){
     const actions=[],fixed=[];
     for(const item of ['廚房','爐灶','廁所','浴室'])for(const palace of locationsOf(placements,item)){
-      const title=`${item}이(가) ${PALACE_LABEL[palace]}에 있음`,summary=`${item}은(는) 보통 고정 격국이라 바꾸려면 수도·전기나 수리가 필요합니다.`;
+      const fixedName=koItem(item),title=`${koWith(fixedName,'이가')} ${PALACE_LABEL[palace]}에 있습니다`,summary=`${koWith(fixedName,'은는')} 보통 쉽게 옮기지 못하는 설비라, 바꾸려면 수도·전기나 수리가 필요합니다.`;
       fixed.push(Object.freeze({title,summary,fixability:FIXABILITY.RENOVATION,fixabilityLabel:FIXABILITY_LABEL.RENOVATION}));
       if(mode==='buy'&&['廁所','廚房'].includes(item))actions.push(action({id:`fixed-${item}-${palace}`,title:`매입 전 ${item} 고정 위치 확인`,reason:`${summary} 이를 계약 판단에 넣으세요. 사이트는 배치로 고정 격국을 바꾼 척하지 않습니다.`,fixability:FIXABILITY.RENOVATION,cost:'PROJECT',duration:'계약 전 확인',priority:58,source:'《양택삼십칙(陽宅三十則)》 불과 배수의 현대 주택 번안',trace:[trace('고정 설비',{item,palace})]}));
     }

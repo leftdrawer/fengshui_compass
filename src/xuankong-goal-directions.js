@@ -25,8 +25,12 @@
     wenchang:Object.freeze(['書房','書桌／工作位','辦公桌','工作室','兒童房'])
   });
   const unique=list=>[...new Set((list||[]).filter(Boolean))];
-  const assertGrid=(grid,name)=>{if(!Array.isArray(grid)||grid.length!==9||!grid.every(star=>Number.isInteger(star)&&star>=1&&star<=9))throw new TypeError(`${name} 은(는) 완전한 구성반(九星盤)이어야 합니다`)};
-  const assertStarGrid=(grid,name)=>{if(!grid||!PALACES.every(palace=>Number.isInteger(grid[palace])&&grid[palace]>=1&&grid[palace]<=9))throw new TypeError(`${name} 은(는) 완전한 구궁 성반(九宮星盤)이어야 합니다`)};
+  function koJosa(word,pair){const text=String(word??'');let jong=-1;for(let i=text.length-1;i>=0;i--){const code=text.charCodeAt(i);if(code>=0xAC00&&code<=0xD7A3){jong=(code-0xAC00)%28;break}if(code>=48&&code<=57){jong=[21,8,0,16,0,0,7,8,8,0][code-48];break}}if(jong<0)jong=0;const has=jong!==0;return pair==='은는'?(has?'은':'는'):pair==='이가'?(has?'이':'가'):pair==='을를'?(has?'을':'를'):pair==='과와'?(has?'과':'와'):pair==='으로'?((has&&jong!==8)?'으로':'로'):''}
+  const koWith=(word,pair)=>`${word}${koJosa(word,pair)}`;
+  const ITEM_KO={'大門':'대문','次要門':'보조문','客廳':'거실','工作室':'작업실','書房':'서재','書桌／工作位':'책상','辦公桌':'사무 책상','陽台':'발코니','窗戶':'창문','空曠處':'빈터','玄關':'현관','餐廳':'식당','主臥室':'안방','兒童房':'아이방','收銀／辦公位':'계산대'};
+  const koPlaces=list=>list.map(item=>ITEM_KO[item]||item);
+  const assertGrid=(grid,name)=>{if(!Array.isArray(grid)||grid.length!==9||!grid.every(star=>Number.isInteger(star)&&star>=1&&star<=9))throw new TypeError(`${koWith(name,'은는')} 완전한 구성반이어야 합니다`)};
+  const assertStarGrid=(grid,name)=>{if(!grid||!PALACES.every(palace=>Number.isInteger(grid[palace])&&grid[palace]>=1&&grid[palace]<=9))throw new TypeError(`${koWith(name,'은는')} 완전한 구궁 성반이어야 합니다`)};
   const palaceForArrayStar=(grid,star)=>PALACES[grid.indexOf(Number(star))];
   const palaceForObjectStar=(grid,star)=>PALACES.find(palace=>grid[palace]===Number(star));
   const itemsForPalace=(placements,palace)=>unique(Array.isArray(placements?.[palace])?placements[palace]:[]);
@@ -39,20 +43,20 @@
     wenchang:Object.freeze({FOCUS:'FOCUS',EXAM:'EXAM',WORK:'WORK_RESEARCH',DESK_FIXED:'DESK_FIXED'})
   });
   const guide=(scenario,title,steps)=>Object.freeze({scenario,title,steps:Object.freeze(steps.map(step=>Object.freeze(step)))});
-  const goalLocation=goal=>goal.mappedPlaces?.length?`${goal.direction} · ${goal.mappedPlaces.join('、')}`:goal.direction;
+  const goalLocation=goal=>goal.mappedPlaces?.length?`${goal.direction} · ${koPlaces(goal.mappedPlaces).join('·')}`:goal.direction;
   const hasAny=(items,names)=>names.some(name=>items.includes(name));
 
   function analyzeWealthDirection({facingStarGrid,currentPeriod,annualStarGrid,placements={}}){
     assertGrid(facingStarGrid,'facingStarGrid');assertStarGrid(annualStarGrid,'annualStarGrid');
     if(!Number.isInteger(Number(currentPeriod))||Number(currentPeriod)<1||Number(currentPeriod)>9)throw new TypeError('currentPeriod 는 1–9 사이여야 합니다');
     const primaryPalace=palaceForArrayStar(facingStarGrid,currentPeriod),annualProsperityPalace=palaceForObjectStar(annualStarGrid,currentPeriod),places=mappedPlaces(placements,primaryPalace,'wealth'),annualSupport=primaryPalace===annualProsperityPalace;
-    return Object.freeze({...palaceResult(primaryPalace),primaryPalace,currentPeriod:Number(currentPeriod),mappedPlaces:Object.freeze(places),practicalAdvice:places.length?`여기에는 이미 ${places.join('·')}이(가) 있어, 트이게 유지하며 정상적으로 사용을 늘리기에 알맞습니다.`:'트이고 통하게 유지하며 정상적으로 쓰기에 알맞습니다.',annualSupport:Object.freeze({...palaceResult(annualProsperityPalace),palace:annualProsperityPalace,matched:annualSupport,authority:authority(AUTHORITY.SHEN_DERIVED,'《심씨현공학(沈氏玄空學)》／《현공집요(玄空輯要)》','연 자백표와 당운 영성','유년 동성(同星)은 그해의 강화로만 쓰며 택명반을 대신하지 않습니다.')}),utilizationConfidence:places.length?'EVIDENCE_PRESENT':'UNKNOWN',authority:authority(AUTHORITY.SHEN_CORE,'《심씨현공학(沈氏玄空學)》','향수／향성 관련 규칙 논함','실제 택명반 향성 층에서 현재 원운 영성이 있는 궁을 찾습니다. 올해 동성은 둘째 층의 강화로만 씁니다.'),folkAuthority:authority(AUTHORITY.FOLK_CUSTOM,'현대 민속 실무','재물 상징 배치','생활화 참고일 뿐 심씨 핵심 규칙이 아닙니다.'),folkSuggestions:Object.freeze(['구역을 정갈하고 밝게 유지','저축을 상징하는 소품이나 건강한 넓은 잎 식물을 둘 수 있음']),waterCaution:'물은 현공에서 향성과 실제 환경을 따로 맞춰 판단해야 하며, 재운 방향이라는 이유만으로 여기에 물을 두는 것은 권하지 않습니다.'});
+    return Object.freeze({...palaceResult(primaryPalace),primaryPalace,currentPeriod:Number(currentPeriod),mappedPlaces:Object.freeze(places),practicalAdvice:places.length?`여기에는 이미 ${koWith(koPlaces(places).join('·'),'이가')} 있어서, 트이게 두고 평소처럼 쓰기를 늘리기 좋습니다.`:'트이고 통하게 두며, 평소처럼 쓰기에 알맞습니다.',annualSupport:Object.freeze({...palaceResult(annualProsperityPalace),palace:annualProsperityPalace,matched:annualSupport,authority:authority(AUTHORITY.SHEN_DERIVED,'《심씨현공학(沈氏玄空學)》／《현공집요(玄空輯要)》','연 자백표와 당운 영성','유년 동성(同星)은 그해의 강화로만 쓰며 택명반을 대신하지 않습니다.')}),utilizationConfidence:places.length?'EVIDENCE_PRESENT':'UNKNOWN',authority:authority(AUTHORITY.SHEN_CORE,'《심씨현공학(沈氏玄空學)》','향수／향성 관련 규칙 논함','실제 택명반 향성 층에서 현재 원운 영성이 있는 궁을 찾습니다. 올해 동성은 둘째 층의 강화로만 씁니다.'),folkAuthority:authority(AUTHORITY.FOLK_CUSTOM,'현대 민속 실무','재물 상징 배치','생활화 참고일 뿐 심씨 핵심 규칙이 아닙니다.'),folkSuggestions:Object.freeze(['구역을 정갈하고 밝게 유지','저축을 상징하는 소품이나 건강한 넓은 잎 식물을 둘 수 있음']),waterCaution:'물은 현공에서 향성과 실제 환경을 따로 맞춰 판단해야 하며, 재운 방향이라는 이유만으로 여기에 물을 두는 것은 권하지 않습니다.'});
   }
 
   function analyzeRelationshipReference({annualStarGrid,placements={}}){
     assertStarGrid(annualStarGrid,'annualStarGrid');
     const primaryPalace=palaceForObjectStar(annualStarGrid,1),celebrationPalace=palaceForObjectStar(annualStarGrid,9),places=mappedPlaces(placements,primaryPalace,'relationship');
-    return Object.freeze({...palaceResult(primaryPalace),primaryPalace,mappedPlaces:Object.freeze(places),practicalAdvice:places.length?`${places.join('·')}이(가) 올해의 인연 참고 구역에 있어, 밝고 정갈하게 유지하며 정상적으로 쓸 수 있습니다.`:'밝고 정갈하게 유지해 일상 활동이나 사교 공간으로 쓰기에 알맞습니다.',authority:authority(AUTHORITY.LATER_PURPLE_WHITE,'후세 자백 응용','유년 일백 인연·도화','일백을 인연／도화로 보는 것은 후세에 흔히 쓰는 확장이며 《심씨현공학(沈氏玄空學)》의 택 판단 핵심이 아닙니다.'),celebration:Object.freeze({...palaceResult(celebrationPalace),palace:celebrationPalace,authority:authority(AUTHORITY.LATER_PURPLE_WHITE,'후세 자백 응용','유년 구자 경사·혼인','구자를 경사·혼인 참고로 보는 것은 후세의 확장입니다.')}),folkAuthority:authority(AUTHORITY.FOLK_CUSTOM,'현대 민속 실무','인연·도화 배치','생활화 참고일 뿐 감정 결과를 보장하지 않습니다.'),folkSuggestions:Object.freeze(['생화','짝을 이룬 소품','따뜻한 색이나 분홍색 작은 장식'])});
+    return Object.freeze({...palaceResult(primaryPalace),primaryPalace,mappedPlaces:Object.freeze(places),practicalAdvice:places.length?`${koWith(koPlaces(places).join('·'),'이가')} 올해의 인연 참고 구역에 있어서, 밝고 정갈하게 두고 평소처럼 쓸 수 있습니다.`:'밝고 정갈하게 두어, 일상이나 사람을 만나는 공간으로 쓰기에 알맞습니다.',authority:authority(AUTHORITY.LATER_PURPLE_WHITE,'후세 자백 응용','유년 일백 인연·도화','일백을 인연／도화로 보는 것은 후세에 흔히 쓰는 확장이며 《심씨현공학(沈氏玄空學)》의 택 판단 핵심이 아닙니다.'),celebration:Object.freeze({...palaceResult(celebrationPalace),palace:celebrationPalace,authority:authority(AUTHORITY.LATER_PURPLE_WHITE,'후세 자백 응용','유년 구자 경사·혼인','구자를 경사·혼인 참고로 보는 것은 후세의 확장입니다.')}),folkAuthority:authority(AUTHORITY.FOLK_CUSTOM,'현대 민속 실무','인연·도화 배치','생활화 참고일 뿐 감정 결과를 보장하지 않습니다.'),folkSuggestions:Object.freeze(['생화','짝을 이룬 소품','따뜻한 색이나 분홍색 작은 장식'])});
   }
 
   function analyzeWenchangDirection({annualStarGrid,monthlyStarGrid,placements={}}){
@@ -76,7 +80,7 @@
       {title:'먼저 위치를 찾는다',body:`지금 집의 주요 재운 왕기는 ${location}에 있습니다.`},
       {title:'실제 사용을 배치',body:workHere?'여기에는 이미 작업 자리가 있어, 일·제안·수주·중요 결정을 우선 처리할 수 있습니다.':'작업 책상이나 자주 쓰는 작업 구역이 있으면 이 구역에 우선 배치할 수 있습니다.'},
       {title:'통로를 정리',body:useStep},
-      {title:'올해는 어떻게 보나',body:annual?'올해 이 방향이 다시 강화돼 우선 활용할 수 있습니다.':`장기 사용은 먼저 ${goal.direction}을(를) 보세요. 올해 단기 강화 위치는 ${goal.annualSupport.direction}입니다.`}
+      {title:'올해는 어떻게 보나',body:annual?'올해 이 방향이 다시 강해져서, 우선 활용할 수 있습니다.':`오래 쓸 자리는 먼저 ${koWith(goal.direction,'을를')} 보세요. 올해 잠시 강해지는 위치는 ${goal.annualSupport.direction}입니다.`}
     ]);
     return guide(ACTION_SCENARIOS.wealth.RECOVERY,'요즘 재운이 아주 나쁠 때',[
       {title:'먼저 위치를 찾는다',body:`지금 집의 주요 재운 왕기는 ${location}에 있습니다.`},
@@ -119,7 +123,7 @@
   function buildWenchangActionGuide({goal,placements={},scenario=ACTION_SCENARIOS.wenchang.FOCUS}={}){
     if(!goal?.primaryPalace)throw new TypeError('문창 행동 안내에는 goal 이 필요합니다');
     const targetItems=itemsForPalace(placements,goal.primaryPalace),deskHere=hasAny(targetItems,['書桌／工作位','辦公桌']),deskPalace=PALACES.find(palace=>hasAny(itemsForPalace(placements,palace),['書桌／工作位','辦公桌'])),location=goalLocation(goal);
-    const position=deskHere?'지금 책상이 이미 추천 구역에 있어 유지할 수 있습니다.':deskPalace?`지금 책상은 ${PALACE_META[deskPalace].direction}에 있습니다. 여유가 되면 ${goal.direction}(으)로 우선 옮길 수 있습니다.`:`고정 독서나 작업 자리가 있으면 ${goal.direction}에 우선 배치할 수 있습니다.`;
+    const position=deskHere?'지금 책상이 이미 추천 구역에 있어서 그대로 두어도 됩니다.':deskPalace?`지금 책상은 ${PALACE_META[deskPalace].direction}에 있습니다. 여유가 되면 ${koWith(goal.direction,'으로')} 먼저 옮길 수 있습니다.`:`고정된 독서나 작업 자리가 있으면 ${goal.direction}에 먼저 둘 수 있습니다.`;
     if(scenario===ACTION_SCENARIOS.wenchang.EXAM)return guide(scenario,'시험을 준비하고 있을 때',[
       {title:'주요 독서 구역을 고정',body:`올해 문창 위치는 ${location}에 있습니다.`},
       {title:'독서 시간대를 고정',body:'주요 독서 시간대를 이 구역에 배치하세요. 핵심은 꾸준한 사용입니다.'},

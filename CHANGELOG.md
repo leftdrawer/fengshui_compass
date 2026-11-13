@@ -2,6 +2,13 @@
 
 > 규칙: 상위 `C:\AI Projects\AGENTS.md`. 최신 항목이 위, 한국어. 이 저장소는 **공개**(GitHub `leftdrawer/fengshui_compass`)이므로 개인정보·비밀값·손님 이야기를 적지 않는다.
 
+## 2026-11-13 — 한국어 문장을 말하는 말에 가깝게
+
+- 무엇: 한 화면에서 같은 한자 풀이를 반복하지 않도록 정리했다. 승탁(承托), 좌향(坐向), 유년(流年)처럼 이미 한 번 보인 말은 다음부터 한글만 둔다. '높고 참 승탁', '좌석 승탁', '좌 뒤 승탁 미증명', '향성 승접 증거', '시스템 정보'처럼 어색한 말을 고쳤다. 방 이름 문장은 받침에 따라 은/는, 이/가, 을/를을 고른다. 캐시 번호는 135.
+- 왜: 한자를 매번 붙이고, 명사만 쌓은 번역투가 손님에게 읽어 주는 말과 달랐다.
+- 현재 상태: 계산과 엔진이 돌려주는 점수·상태·궁 코드는 그대로다. 화면에 나가는 문장만 바꿨다. 비성, 좌향, 정향, 겸향, 하괘, 체괘, 산성, 향성, 궁반, 택반, 유년, 원운, 승접, 승탁은 용어로 남겼다. 은호당 주소는 주소만, 실물 나침반에는 라경을 붙이지 않으며, 본문 운수는 9운, 반 위 숫자는 一–九다.
+- 관련 파일: `compass.html`, `compass-mobile.html`, `index.html`, `src/compass-app.js`, `src/compass-professional-data.js`, `src/placement-advice-engine.js`, `src/dual-star-guidance.js`, `src/xuankong-temporal.js`, `src/xuankong-home-advisor.js`, `src/xuankong-goal-directions.js`, `src/xuankong-beginner-guide.js`, `src/xuankong-explanations.js`
+
 ## 2026-11-11 — 현공 용어를 표준 말로 다시 맞춤
 
 - 무엇: '나는 별'을 비성(飛星)으로 되돌리고, 排盤을 뜻하던 '배반'을 궁반을 잡는 말로 바꿨다. 좌향·정향·겸향·하괘·체괘·유년·궁반·택운·원운·24산은 한 화면에서 한 번만 한자를 붙였다. 각도 상태는 배반이라고 쓰지 않고, 정향이면 하괘, 겸향이면 체괘라고 적는다. 캐시 번호는 134.
