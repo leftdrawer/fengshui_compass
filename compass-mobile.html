@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0E0E10">
   <meta name="description" content="은호당 현공비성 풍수 나침반(모바일 컴팩트 버전): 스마트폰 한 손 조작에 맞춘 세로형 레이아웃으로 7단계 기능을 그대로 제공합니다.">
-  <meta name="application-version" content="135">
+  <meta name="application-version" content="136">
   <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16-v2.png">
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32-v2.png">
   <link rel="icon" type="image/png" sizes="192x192" href="./assets/app-icon-192-v2.png">
@@ -24,7 +24,7 @@
   <meta name="apple-mobile-web-app-title" content="풍수 나침반">
   <title>풍수 나침반</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="./src/iching-circle.css?v=135">
+  <link rel="stylesheet" href="./src/iching-circle.css?v=136">
   <script>
     // 뷰 선택 공용 로직(데스크톱/모바일 자동 감지 + 수동 전환 유지). 무한 리디렉션 방지를 위해 각 페이지는 "반대 기기"일 때만 상대 페이지로 보낸다.
     (()=>{
@@ -467,11 +467,12 @@
     }
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   </style>
+  <style>.fn-mark{font-size:.68em;font-weight:650;color:var(--muted,#6A6A72);margin-left:1px;line-height:0;position:relative;top:-.35em}.fn-list{list-style:none;margin:12px 0 0;padding:8px 0 0;border-top:1px solid var(--line,#E0E0E4);color:var(--muted,#6A6A72);font-size:.75rem;line-height:1.5}.fn-list li{margin:1px 0}</style>
 </head>
 <body>
   <script>
     (()=>{
-      const moduleSources=['./src/xuankong-engine.js?v=135','./src/xuankong-temporal.js?v=135','./src/xuankong-beginner-guide.js?v=135','./src/xuankong-onboarding.js?v=135','./src/xuankong-direction-semantics.js?v=135','./src/xuankong-home-advisor.js?v=135','./src/xuankong-goal-directions.js?v=135','./src/xuankong-s-core.js?v=135','./src/xuankong-explanations.js?v=135','./src/compass-professional-data.js?v=135','./src/dual-star-guidance.js?v=135','./src/verse-explanations.js?v=135','./src/placement-advice-engine.js?v=135','./src/orientation-helper.js?v=135','./src/iching-circle.js?v=135','./src/iching-circle-ui.js?v=135'];
+      const moduleSources=['./src/term-footnotes.js?v=136','./src/xuankong-engine.js?v=136','./src/xuankong-temporal.js?v=136','./src/xuankong-beginner-guide.js?v=136','./src/xuankong-onboarding.js?v=136','./src/xuankong-direction-semantics.js?v=136','./src/xuankong-home-advisor.js?v=136','./src/xuankong-goal-directions.js?v=136','./src/xuankong-s-core.js?v=136','./src/xuankong-explanations.js?v=136','./src/compass-professional-data.js?v=136','./src/dual-star-guidance.js?v=136','./src/verse-explanations.js?v=136','./src/placement-advice-engine.js?v=136','./src/orientation-helper.js?v=136','./src/iching-circle.js?v=136','./src/iching-circle-ui.js?v=136'];
       const loadScript=src=>new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=src;script.onload=resolve;script.onerror=()=>reject(new Error(`불러오지 못했습니다: ${src}`));document.body.append(script)});
       let appLoadPromise=null;
       const loadMainApp=()=>appLoadPromise||(appLoadPromise=(async()=>{
@@ -603,6 +604,6 @@
   <dialog class="guide-dialog" id="guideDialog" aria-labelledby="guideTitle"><div class="guide-wrap"><div class="guide-head"><div class="guide-title"><div><p class="eyebrow" id="guideEyebrow">사용 안내</p><h2 id="guideTitle">이 단계는 어떻게 쓰나요?</h2></div></div><button class="guide-close" id="guideClose" type="button" aria-label="사용 안내 닫기">×</button></div><p class="guide-lead" id="guideLead"></p><div class="guide-content" id="guideContent"></div><div class="guide-role hidden" id="guideRole"><p>결과를 어떻게 보고 싶으세요?</p><div class="guide-role-buttons"><button type="button" data-user-mode="beginner">일반 사용자입니다</button><button type="button" data-user-mode="learner">풍수를 배우는 사람입니다</button></div></div><div class="guide-actions"><button class="secondary hidden" id="guideLater" type="button">건너뛰기</button><button class="primary" id="guideDone" type="button">알겠습니다</button></div></div></dialog>
   <dialog class="guide-dialog plan-guide-dialog" id="planGuideDialog" aria-labelledby="planGuideTitle"><div class="guide-wrap"><div class="guide-head"><div><p class="eyebrow">보조 설명</p><h2 id="planGuideTitle">평면도를 표시하기 편한 위치로 맞추기</h2></div><button class="guide-close" id="planGuideClose" type="button" aria-label="평면도 설명 닫기">×</button></div><div class="tutorial-sequence compact"><article class="tutorial-step"><b class="tutorial-symbol">①</b><div><strong>먼저 방향을 맞추세요</strong><p>방향은 언제나 이미지가 꽉 찼는지보다 중요합니다.</p></div></article><article class="tutorial-step"><b class="tutorial-symbol">②</b><div><strong>그다음 위치와 크기를 조정하세요</strong><p>방을 알아보기 쉬우면 됩니다. 집을 정사각형으로 늘릴 필요는 없습니다.</p></div></article><article class="tutorial-step"><b class="tutorial-symbol">③</b><div><strong>마지막으로 방 방위를 확인하세요</strong><p>X/Y 확대·축소는 조작 보조일 뿐이니, 꽉 채우려고 방향을 잘못 표시하지 마세요.</p></div></article></div><div class="guide-warning">판독은 마지막에 표시한 방위를 사용하며, 이미지를 변형한 비율은 사용하지 않습니다.</div><div class="guide-actions"><button class="primary" id="planGuideDone" type="button">알겠습니다</button></div></div></dialog>
   <dialog id="lockDialog" aria-labelledby="lockDialogTitle"><h2 id="lockDialogTitle">먼저 방향을 끝내세요</h2><p id="lockPrompt">현재 방향을 사용하면 방 배치를 시작할 수 있습니다.</p><div class="dialog-actions"><button class="secondary" id="keepMeasuring">조정으로 돌아가기</button><button class="primary" id="confirmLock">현재 방향 사용</button></div></dialog>
-  <script type="text/plain" id="shadoAppSource" data-src="./src/compass-app.js?v=135"></script>
+  <script type="text/plain" id="shadoAppSource" data-src="./src/compass-app.js?v=136"></script>
 </body>
 </html>
