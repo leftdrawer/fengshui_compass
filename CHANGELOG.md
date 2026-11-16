@@ -48,6 +48,12 @@
 - `dual-star-corpus.json` 은 저장소에 없으므로 요청하지 않는다. 브라우저 404가 남지 않고, 성결 칸에는 파일이 없다는 짧은 안내만 둔다.
 - 관련 파일: `src/iching-circle.js`, `src/iching-circle-ui.js`, `src/iching-circle.css`, `src/compass-app.js`, `compass.html`, `compass-mobile.html`, `data/`
 
+## 2026-11-02 — AGENTS.md 새로 만듦
+
+- 무엇: 에이전트가 먼저 읽을 짧은 `AGENTS.md`(목적·구성·주의)를 만듦. 내용은 README·CHANGELOG에서 확인한 것만.
+- 관련 파일: `AGENTS.md`(새로)
+- 작업자: Grok Bot (은호당님 승인 'A와 C부터', 점검 Page 자동 적용 항목)
+
 ## 2026-10-31 — CHANGELOG 신설
 
 - 무엇: 이 프로젝트에 `CHANGELOG.md`가 없어(상위 규칙상 프로젝트마다 필요) 새로 만듦. 아래는 지금까지의 커밋 기록을 정리한 것이다.
