@@ -1,5 +1,5 @@
 ﻿<!doctype html>
-<html lang="ko">
+<html lang="ko" data-astryx-theme="neutral">
 <head>
   <meta charset="utf-8">
   <base href="./">
@@ -24,6 +24,7 @@
   <meta name="apple-mobile-web-app-title" content="풍수 나침반">
   <title>풍수 나침반</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="./src/astryx-neutral-0.7.16.css">
   <link rel="stylesheet" href="./src/iching-circle.css?v=136">
   <script>
     // 뷰 선택 공용 로직(데스크톱/모바일 자동 감지 + 수동 전환 유지). 무한 리디렉션 방지를 위해 각 페이지는 "반대 기기"일 때만 상대 페이지로 보낸다.
@@ -399,6 +400,46 @@
     .site-footer .plain-url{font-size:.9rem}
   </style>
   <style>.fn-mark{font-size:.68em;font-weight:650;color:var(--muted,#6A6A72);margin-left:1px;line-height:0;position:relative;top:-.35em}.fn-list{list-style:none;margin:12px 0 0;padding:8px 0 0;border-top:1px solid var(--line,#E0E0E4);color:var(--muted,#6A6A72);font-size:.75rem;line-height:1.5}.fn-list li{margin:1px 0}</style>
+<style id="design-overrides-neutral">
+
+/* Astryx Neutral 0.7.16 — focused visual layer; compass and status colours remain product-owned. */
+:root {
+  --bg: var(--color-background-body);
+  --card: var(--color-background-card);
+  --ink: var(--color-text-primary);
+  --muted: var(--color-text-secondary);
+  --line: var(--color-border);
+  --shadow: var(--shadow-low);
+  font-family: var(--font-family-body), "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", sans-serif;
+}
+:root[data-theme="dark"] { color-scheme: dark; }
+:root:not([data-theme="dark"]) { color-scheme: light; }
+body { color: var(--ink); font-family: var(--font-family-body), "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", sans-serif; }
+.eyebrow { color: var(--color-text-secondary); font-size: var(--text-supporting-size); font-weight: var(--text-supporting-weight); letter-spacing: normal; margin: 0 0 .35rem; }
+.shell { width: min(100%, 72rem); padding-inline: clamp(.75rem, 2.2vw, 1.5rem); padding-block-end: calc(2.5rem + env(safe-area-inset-bottom)); }
+.layout { grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr); gap: clamp(1rem, 2vw, 1.5rem); }
+.card { background: var(--color-background-card); border: 1px solid var(--color-border); border-radius: var(--radius-container); box-shadow: none; backdrop-filter: none; }
+.instrument, .chart-card, .controls, .workspace { min-inline-size: 0; }
+button, input, select, textarea { font-family: inherit; }
+.sensor button, .ghost, .top-actions a, .top-actions button { min-block-size: var(--size-element-lg, 48px); }
+:where(button, a, input, select, textarea, [tabindex]):focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+input, select, textarea { caret-color: var(--gold); }
+::selection { color: var(--color-text-primary); background: var(--color-accent-muted); }
+:root { scrollbar-color: var(--color-border-emphasized) var(--bg); }
+@media (max-width: 920px) { .layout { grid-template-columns: minmax(0, 1fr); } .instrument { position: relative; inset-block-start: auto; } }
+@media (max-width: 700px) {
+  .shell { padding-inline: .75rem; }
+  .top { align-items: flex-start; }
+  .brand { min-inline-size: 0; }
+  .top-actions { flex-wrap: wrap; justify-content: flex-end; }
+  .instrument, .chart-card, .workspace, .home-score, .analysis, .dual-star { padding: var(--astryx-card-padding, 1rem); }
+  .card { border-radius: var(--radius-page); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+</style>
 </head>
 <body>
   <script>
@@ -435,7 +476,7 @@
     <div class="layout">
       <section class="card instrument" id="instrument">
         <div class="step-heading"><span class="step-number">1</span><div><small class="step-progress">1 / 7 단계</small><strong>방향 재기</strong><p>집의 좌향(坐向)을 알려 주세요.</p></div><button class="step-help-button" type="button" id="openGuideInline" data-guide-step="1" aria-label="1단계 안내 보기"><span class="help-icon" aria-hidden="true">?</span><span class="help-label">안내</span></button></div>
-        <p class="eyebrow">좌향</p><div class="period-heading" title="현공풍수의 9운(구운)입니다."><strong class="period-name" id="periodName" title="현공풍수의 9운(구운)입니다.">9운</strong><h1 id="periodTitle" title="현공풍수의 9운(구운)입니다.">(2024~2043년)</h1></div><p class="sub" id="periodRange" title="현공풍수의 9운(구운)입니다.">현재 시운</p>
+        <div class="period-heading" title="현공풍수의 9운(구운)입니다."><strong class="period-name" id="periodName" title="현공풍수의 9운(구운)입니다.">9운</strong><h1 id="periodTitle" title="현공풍수의 9운(구운)입니다.">(2024~2043년)</h1><p class="eyebrow">좌향</p></div><p class="sub" id="periodRange" title="현공풍수의 9운(구운)입니다.">현재 시운</p>
         <div class="compass-wrap"><div class="lubber" aria-hidden="true"></div><div class="compass" id="dial" role="slider" tabindex="0" aria-label="집 좌향 나침반" aria-valuemin="0" aria-valuemax="359.9" aria-valuenow="0" aria-valuetext="0 도"></div><div class="mountain-label-layer" id="mountainLabels"><i class="mountain-radius-probe" id="mountainRadiusProbe" aria-hidden="true"></i></div><div class="needle"><div><span id="axisMode">향</span><b id="headingText">0°</b><small>좌</small></div></div></div>
         <div class="compass-manual"><div class="control-head"><h2>집 좌향 입력</h2></div><div class="manual"><input class="range" id="heading" type="range" min="0" max="359.9" step="0.1" aria-label="드래그로 집 좌향 설정"><input class="angle-number" id="headingNumber" type="text" inputmode="decimal" autocomplete="off" maxlength="12" pattern="(?:[0-9]{1,3})(?:\.[0-9]+)?" aria-label="집 좌향 각도 입력"></div><small class="field-help" id="manualNorthHelp">숫자 칸을 누르면 지워집니다. 0 이상 360 미만의 소수를 입력할 수 있으며, 표시는 0.1°까지, 계산은 원래 정밀도를 유지합니다.</small></div>
         <div class="axis"><div><span>집 뒤쪽(좌)</span><strong id="sitting">남(午)</strong></div><i>뒤 ─ 앞</i><div><span>집 앞쪽(향)</span><strong id="facing">북(子)</strong></div></div>
