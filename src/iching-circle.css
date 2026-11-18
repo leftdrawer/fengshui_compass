@@ -34,7 +34,7 @@
 .compass-wrap.ring-on .iching-ring{display:block}
 .iching-ring-band{fill:color-mix(in srgb,var(--card) 88%,transparent);stroke:color-mix(in srgb,var(--ink) 28%,transparent);stroke-width:.35}
 .iching-ring-stroke{stroke:var(--ink);stroke-width:.72;stroke-linecap:butt}
-.iching-ring-glyph{fill:var(--ink);font-weight:800;font-family:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo",sans-serif;stroke:var(--card);stroke-width:.8px;paint-order:stroke}
+.iching-ring-glyph{fill:var(--ink);font-weight:800;font-family:var(--font-family-body),"Pretendard Variable",Pretendard,"Apple SD Gothic Neo",sans-serif;stroke:var(--card);stroke-width:.8px;paint-order:stroke}
 .iching-house,.iching-palaces{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
 .iching-house-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .iching-supplement{display:inline-flex;flex:0 0 auto;padding:4px 8px;border-radius:999px;background:color-mix(in srgb,var(--gold) 14%,transparent);color:var(--gold);font-size:.72rem;font-weight:850}

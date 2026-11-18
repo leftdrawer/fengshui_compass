@@ -3,7 +3,7 @@
 > 상위 규칙 `C:\AI Projects\AGENTS.md`를 함께 따른다. 작업 전 이 폴더 `CHANGELOG.md` 맨 위 항목부터 읽는다.
 
 ## 목적
-- 현공비성 풍수 나침반 정적 웹앱(한국어 로컬라이징, Apple HIG 디자인). 자세한 설명은 `README.md`.
+- 현공비성 풍수 나침반 정적 웹앱(한국어). 시각 기반은 Astryx Neutral 0.7.16이고, Apple HIG는 보조 기준이다. 자세한 것은 `DESIGN.md`, `README.md`.
 
 ## 실행
 - 빌드 없음. 저장소 루트에서 `python -m http.server 8080` 후 `http://localhost:8080/`.
