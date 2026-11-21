@@ -2,6 +2,14 @@
 
 > 규칙: 상위 `C:\AI Projects\AGENTS.md`. 최신 항목이 위, 한국어. 이 저장소는 **공개**(GitHub `leftdrawer/fengshui_compass`)이므로 개인정보·비밀값·손님 이야기를 적지 않는다.
 
+## 2026-11-21 — 저장소 점검: 계산 대조와 좁은 화면 단계 글자
+
+- 무엇: 현공 운 구간, 자오 하괘, 24산 경계가 기존 계산과 같은지 보는 `scripts/check-engine.mjs`를 더했다. 모바일 하단 7단계 글자가 360px에서 잘리지 않도록 칸 안에서 줄바꿈되게 했다. 계산 결과, 문장, 주소, 저장 키는 그대로다.
+- 왜: 계산 핵심에는 운·경계·좌향을 고정해 두는 자동 확인이 없었다. 좁은 화면의 단계 이름은 칸을 넘으면 앞글자가 잘렸다.
+- 관련 파일: `scripts/check-engine.mjs`, `compass-mobile.html`, `README.md`, `CHANGELOG.md`
+- 작업자: Cursor Cloud Agent (Grok Bot 구록이 경유)
+- 남은 일·확인 필요: 이 검사는 GitHub Actions workflow에 넣지 않았다. 배포 설정은 이번 점검에서 건드리지 않는다. 실기기 나침반 센서는 확인하지 못했다.
+
 ## 2026-11-18 — astryx 테마 이식으로 UX/UI 정비
 
 - 무엇을 바꿨는지 / 사용자 지시: "astryx와 stageshow를 활용해 웹에 배포된 사이트 UXUI 손보기", 테마만 이식하고 HIG는 보조 기준. React로 다시 쓰지 않았다. Astryx Neutral 0.7.16을 시각 기반으로 두고, 면·글자·테두리·반경·간격을 토큰에 연결했다. 한글은 Figtree 뒤 Pretendard와 Apple SD Gothic Neo로 두고 본문은 16px이다. 금·오렌지와 상태색, 계산, 주소, 데이터 파일은 그대로다. stageshow 그림은 넣지 않았다.

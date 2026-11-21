@@ -15,6 +15,14 @@ python -m http.server 8080
 
 브라우저에서 `http://localhost:8080/` 을 열면 기기를 자동 감지해 데스크톱은 `compass.html`, 모바일은 `compass-mobile.html` 로 이동합니다. 비밀번호 없이 바로 로드됩니다. 원하는 화면을 직접 열고 싶다면 `compass.html`(데스크톱) 또는 `compass-mobile.html`(모바일 전용) 을 열면 됩니다.
 
+계산과 화면 id가 자료와 맞는지 확인하려면 다음을 실행합니다.
+
+```bash
+node scripts/check-dom-ids.mjs
+node scripts/check-iching.mjs
+node scripts/check-engine.mjs
+```
+
 > 파일을 직접 더블클릭(`file://`)으로 열면 모듈 동적 로딩이 막힐 수 있으니, 위처럼 정적 서버로 여는 것을 권장합니다.
 
 ## 주요 기능 (7단계 흐름)
