@@ -2,6 +2,14 @@
 
 > 규칙: 상위 `C:\AI Projects\AGENTS.md`. 최신 항목이 위, 한국어. 이 저장소는 **공개**(GitHub `leftdrawer/fengshui_compass`)이므로 개인정보·비밀값·손님 이야기를 적지 않는다.
 
+## 2026-11-18 — astryx 테마 이식으로 UX/UI 정비
+
+- 무엇을 바꿨는지 / 사용자 지시: "astryx와 stageshow를 활용해 웹에 배포된 사이트 UXUI 손보기", 테마만 이식하고 HIG는 보조 기준. React로 다시 쓰지 않았다. Astryx Neutral 0.7.16을 시각 기반으로 두고, 면·글자·테두리·반경·간격을 토큰에 연결했다. 한글은 Figtree 뒤 Pretendard와 Apple SD Gothic Neo로 두고 본문은 16px이다. 금·오렌지와 상태색, 계산, 주소, 데이터 파일은 그대로다. stageshow 그림은 넣지 않았다.
+- 왜: 나침반은 회색 계측 화면에 금색 표식이 있는 도구라 Neutral이 맞다. 스크립트·세리프 테마는 궁반 숫자와 한글을 해친다. 테마 CSS가 간격·굵기 토큰을 비워 두어 카드 여백과 제목 굵기가 빠지던 것을 브리지에서 채웠다.
+- 관련 파일: `src/astryx-bridge.css`, `src/astryx-neutral-0.7.16.css`, `compass.html`, `compass-mobile.html`, `index.html`, `src/compass-app.js`, `src/iching-circle.css`, `manifest.webmanifest`, `DESIGN.md`, `README.md`, `AGENTS.md`
+- 작업자: Cursor Cloud Agent (Grok Bot 구록이 경유)
+- 남은 일·확인 필요: 실기기에서 다크 모드 전환, 키보드 포커스, 360px 너비, 나침반 센서. 병합·수동 배포는 하지 않음. 캐시 번호는 137.
+
 ## 2026-11-16 — Astryx Neutral 시각 토대 적용
 
 - 무엇: Astryx Neutral 0.7.16(MIT)을 로컬로 연결하고 두 화면의 배경·면·글자·테두리 토큰, 반응형 열, 키보드 포커스와 reduced-motion 스타일을 다듬었다. 풍수 나침반의 금·오렌지 의미색과 계산·7단계 흐름은 보존했다.
