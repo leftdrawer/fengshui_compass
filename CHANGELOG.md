@@ -2,6 +2,15 @@
 
 > 규칙: 상위 `C:\AI Projects\AGENTS.md`. 최신 항목이 위, 한국어. 이 저장소는 **공개**(GitHub `leftdrawer/fengshui_compass`)이므로 개인정보·비밀값·손님 이야기를 적지 않는다.
 
+## 2026-11-25 — libraries.dev 효과 적용 (eunho-fx)
+
+- 무엇: 은호당님 지시("libraries.dev 효과 컴포넌트 중 어울리는 것을 내 AI 페이지 전부에 적용"). libraries.dev 라이브러리(border-beam·thinking-orbs·liquid-gooey·metal-fx·img-fx)는 React 18 전용이라, 같은 효과를 React 없이 쓰는 공용 파일 eunho-fx 1.0(CSS+JS, gzip 약 10KB, thinking-orbs 엔진 MIT 포함)을 붙였다.
+- 이 페이지에 쓴 것: 서명 빛 스침, '나침반 켜기' 단추 둘레 빛, 궁반(9궁)이 처음 그려지거나 바뀌면 현상되듯 드러남(2.5초에 한 번까지), 보고서 '쉬운 결과/전문 해설' 선택 표시(Gooey)와 전환 물결, 안내 창 열릴 때 빛 한 바퀴, 주 단추 자석·카드 커서 빛. 데스크톱·모바일 두 파일에 같게.
+- 관련 파일: `compass.html`, `compass-mobile.html`, `CHANGELOG.md`
+- 남은 일: 커밋·푸시는 은호당님 승인 후. 실기기 센서 화면은 확인 못 함.
+- 지킨 것: 계산·저장·전송 로직과 글자(문구)는 바꾸지 않았다. `prefers-reduced-motion`이면 움직임이 모두 멈추고, 자석·커서 빛은 마우스가 있는 큰 화면에서만 켜진다. 화면 밖·숨은 탭에서는 멈춘다.
+- 작업자: Grok Bot (백업: `C:\Users\phlog\ai-audit\backups\20261125-2045\`)
+
 ## 2026-11-21 — 저장소 점검: 계산 대조와 좁은 화면 단계 글자
 
 - 무엇: 현공 운 구간, 자오 하괘, 24산 경계가 기존 계산과 같은지 보는 `scripts/check-engine.mjs`를 더했다. 모바일 하단 7단계 글자가 360px에서 잘리지 않도록 칸 안에서 줄바꿈되게 했다. 계산 결과, 문장, 주소, 저장 키는 그대로다.
