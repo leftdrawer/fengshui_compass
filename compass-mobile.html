@@ -629,7 +629,6 @@
   if(!window.EunhoFX) return;
   var FX = window.EunhoFX, $ = function(id){ return document.getElementById(id); };
   FX.auto({
-    metal: '.brand-sign',                                   // Liquid metal: 은호당 서명에 빛이 스친다
     magnetic: 'button.primary',                             // Magnetic UI (마우스 화면만)
     light: '.chart-card, .case-setup, .analysis-card, .advisor-card, .tour-card'  // 커서 빛 (마우스 화면만)
   });
@@ -643,14 +642,7 @@
     var now = Date.now(), first = !lastSig; lastSig = sig; if(!first && now - lastT < 2500) return; lastT = now;
     FX.develop(grid, 950); FX.beamOnce(grid, 3000);
   }).observe(grid, {childList:true, subtree:true});
-  // Gooey + Distortion waves: 보고서 '쉬운 결과 / 전문 해설' 전환
-  var vs = $('viewSwitch');
-  if(vs){ FX.gooTabs(vs, {item:'button', active:'.active', inset:3});
-    vs.addEventListener('click', function(e){ if(e.target.closest('button')) setTimeout(function(){ FX.wave($('analysisGrid') || vs.closest('section'), {ms:520, scale:20}); }, 0); }); }
-  // 안내 창이 열리면 테두리에 빛이 한 바퀴
-  document.querySelectorAll('dialog').forEach(function(d){
-    new MutationObserver(function(){ if(d.open){ var w = d.querySelector('.guide-wrap') || d; FX.beamOnce(w, 2800); } }).observe(d, {attributes:true, attributeFilter:['open']});
-  });
+  // #viewSwitch Gooey·전환 물결·안내 창 테두리 빛은 빼 둠: 탭은 숨은 채 초기화되어 0x0이었고, 안내 창 빛은 산만했다.
 })();
 </script>
 </body>

@@ -2,6 +2,14 @@
 
 > 규칙: 상위 `C:\AI Projects\AGENTS.md`. 최신 항목이 위, 한국어. 이 저장소는 **공개**(GitHub `leftdrawer/fengshui_compass`)이므로 개인정보·비밀값·손님 이야기를 적지 않는다.
 
+
+## 2026-11-26 — eunho-fx 중 고장·산만한 효과 정리
+
+- 무엇: 서명 금속광(가는 먹선이라 보이지 않음), `#viewSwitch` Gooey와 그에 묶인 전환 물결(숨은 채로 초기화되어 0×0), 안내 창 테두리 빛을 뺐다. 궁반(9궁) 둘레 빛과 현상, '나침반 켜기' 단추 빛, 주 단추 자석·카드 커서 빛은 그대로 둔다.
+- 관련 파일: `compass.html`, `compass-mobile.html`, `CHANGELOG.md`
+- 왜: 은호당님 점검 승인. 보이지 않거나 레이아웃·가독성을 해치는 효과만 걷어 내고, 맥락에 맞는 것은 그대로 둔다.
+- 작업자: Grok Bot (백업: `C:\Users\phlog\ai-audit\backups\20261126-0406-fx-cleanup\`)
+
 ## 2026-11-25 — libraries.dev 효과 적용 (eunho-fx)
 
 - 무엇: 은호당님 지시("libraries.dev 효과 컴포넌트 중 어울리는 것을 내 AI 페이지 전부에 적용"). libraries.dev 라이브러리(border-beam·thinking-orbs·liquid-gooey·metal-fx·img-fx)는 React 18 전용이라, 같은 효과를 React 없이 쓰는 공용 파일 eunho-fx 1.0(CSS+JS, gzip 약 10KB, thinking-orbs 엔진 MIT 포함)을 붙였다.
