@@ -3,6 +3,13 @@
 > 규칙: 상위 `C:\AI Projects\AGENTS.md`. 최신 항목이 위, 한국어. 이 저장소는 **공개**(GitHub `leftdrawer/fengshui_compass`)이므로 개인정보·비밀값·손님 이야기를 적지 않는다.
 
 
+## 2026-11-28 — 탭 선택 표시 미끄러짐·안내 창 자리 잡기 (eunho-fx-plus)
+
+- 무엇: 도구 종류 탭(`#toolGroups .tool-tabs`)과 평면도 조정 탭(`#planControlGroups`)의 선택 표시가 앞 칸에서 새 칸으로 미끄러진다(EasyUI Animated Tabs·Morphin Tabs). 사용 안내·평면도 안내·잠금 창은 열릴 때 0.94→1.02→1로 살짝 넘쳤다가 자리 잡는다(EasyUI SettleModal). 색은 원래 선택 색 그대로, 계산 엔진·센서·저장 로직은 그대로.
+- 출처: EasyUI(MIT © 2026 Suraj Maurya)·Morphin UI(MIT © 2026 Ivan Oliinyk)의 동작을 React 없이 새로 쓴 `eunho-fx-plus` 1.1. 페이지 안에 `<script id="eunho-fx-plus">`로 넣었다.
+- 관련 파일: `compass.html`, `compass-mobile.html`, `CHANGELOG.md`
+- 작업자: Grok Bot (백업: `C:\Users\phlog\ai-audit\backups\20261128-1856-round3\fengshui_compass\`)
+
 ## 2026-11-26 — eunho-fx 중 고장·산만한 효과 정리
 
 - 무엇: 서명 금속광(가는 먹선이라 보이지 않음), `#viewSwitch` Gooey와 그에 묶인 전환 물결(숨은 채로 초기화되어 0×0), 안내 창 테두리 빛을 뺐다. 궁반(9궁) 둘레 빛과 현상, '나침반 켜기' 단추 빛, 주 단추 자석·카드 커서 빛은 그대로 둔다.
