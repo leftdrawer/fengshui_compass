@@ -199,3 +199,13 @@ input, select, textarea { caret-color: var(--gold, var(--color-accent)); }
     outline: 3px solid Highlight;
   }
 }
+
+/* hangul-wrap (giting-skills): 한국어 어절 단위 줄바꿈. 색·레이아웃 변경 없음 */
+:where(h1,h2,h3,h4,h5,h6,p,li,dd,dt,blockquote,figcaption,small,.explainable-insight-title,#actionToastText){word-break:keep-all;overflow-wrap:break-word;}
+:where(h1,h2,h3,h4,h5,h6){text-wrap:balance;}
+:where(p,li,dd,blockquote,figcaption){text-wrap:pretty;}
+:where(pre,code,kbd,samp){overflow-wrap:anywhere;}
+/* 문장형 span·버튼(어절 사이 공백 있음, 넘침 재확인함) */
+:where(.quick-contrast span,.tour-help-note span,.guide-role-buttons button,.plan-button){word-break:keep-all;overflow-wrap:break-word;}
+/* 짧은 묶음만 nowrap: 토스트의 '되돌리기' */
+#actionToastUndo{white-space:nowrap;}
