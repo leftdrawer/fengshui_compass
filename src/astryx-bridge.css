@@ -209,3 +209,5 @@ input, select, textarea { caret-color: var(--gold, var(--color-accent)); }
 :where(.quick-contrast span,.tour-help-note span,.guide-role-buttons button,.plan-button){word-break:keep-all;overflow-wrap:break-word;}
 /* 짧은 묶음만 nowrap: 토스트의 '되돌리기' */
 #actionToastUndo{white-space:nowrap;}
+/* hallmark Floor 40 (대비): '전문 해설' 버튼 글자 4.32:1 → 4.94:1. 밝은 테마만, 같은 주황을 잉크 쪽으로 8% */
+:root:not([data-theme="dark"]) :is(.professional-explain-toggle,.professional-explain-button){color:color-mix(in srgb,var(--jade) 92%,var(--ink));}
